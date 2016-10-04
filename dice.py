@@ -1,15 +1,15 @@
-import constants.py
+import constants
+import random
 
 class Dice:
     # Methods
-    def __init__(self,nFaces,currentValue):
-        self.currentValue = currentValue
-        self.nFaces = nFaces
+    def __init__(self):
+        self.currentValue = 0
+        self.nFaces = constants.N_FACES_DICE
 
-    def roll:
+    def roll(self):
+        self.currentValue = random.randrange(0,constants.N_FACES_DICE,1)
+        return self.currentValue
 
-    def getValue:
-
-    def reset:
-    
-    
+    def getValue(self):
+        return self.currentValue 

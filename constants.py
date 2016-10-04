@@ -8,4 +8,4 @@ ROLLS_PER_TURN = 3
 STARTING_DICE_NUMBER = 6
 
 # Lists
-list DiceValues = [1, 2, 3, Heal, Attack]
+# list DiceValues = [1, 2, 3, Heal, Attack]
