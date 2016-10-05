@@ -1,4 +1,5 @@
 # Constants.py
+from enum import Enum
 # Constants
 MAX_DICE = 8
 MAX_LIVES = 10
@@ -8,4 +9,9 @@ ROLLS_PER_TURN = 3
 STARTING_DICE_NUMBER = 6
 
 # Lists
-# list DiceValues = [1, 2, 3, Heal, Attack]
+class DiceValues(Enum):
+    one = 1
+    two = 2
+    three = 3
+    heal = 4
+    attack = 5
