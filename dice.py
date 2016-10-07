@@ -11,5 +11,8 @@ class Dice:
         self.currentValue = random.randrange(0,constants.N_FACES_DICE,1)
         return self.currentValue
 
+    def reset(self):
+        self.currentValue = 0
+
     def getValue(self):
         return self.currentValue 

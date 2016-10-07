@@ -37,3 +37,16 @@ class TestPlayer(unittest.TestCase):
         self.assertNotEqual(testedPlayer.ID,Player.nPlayers)
         self.assertEqual(testedPlayer2.ID,Player.nPlayers)
         self.assertEqual(len(testedPlayer.playerDice),constants.STARTING_DICE_NUMBER)
+
+    def testProcessPlay(self):
+        testedPlayer = Player()
+        # Check one dice for each value
+        for i in len(testedPlayer.playerDice):
+            testedPlayer.playerDice[i].currentValue = i + 1
+        testedPlayer.processPlay()
+        self.assertEqual(testedPlayer.attackDice, 1)
+        self.assertEqual(testedPlayer.healDice, 1)
+        testedPlayer.addPoints()
+        self.assertEqual(testedPlayer.points, 0)
+        # Check no heal and 3 ones
+        # testedPlayer.playerDice = []
