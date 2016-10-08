@@ -10,6 +10,9 @@ class Player:
         self.ID = Player.nPlayers
         self.lives = constants.MAX_LIVES
         self.points = 0
+        self.myTurn = False
+        self.playerWon = False
+        self.playerLost = False
         self.playerDice = []
         for i in range(constants.STARTING_DICE_NUMBER):
             self.playerDice.append(Dice())
@@ -17,41 +20,8 @@ class Player:
         self.attackDice = 0
         self.healDice = 0
         self.pointsDice = [0, 0, 0]
-        self.myTurn = False
-        self.playerWon = False
-        self.playerLost = False
 
-    def takeDamage(self, damagePoints):
-        self.lives -= damagePoints
-        if (self.lives <= 0):
-            self.lives = 0
-            self.myTurn = False
-            self.playerLost = True
-
-    def healDamage(self, healAmmount):
-        self.lives += healAmmount
-        if (self.lives > constants.MAX_LIVES):
-            self.lives = constants.MAX_LIVES
-
-    def attack(self):
-        return self.attackDice
-
-    def resetAllDice(self):
-        for currentDice in self.playerDice:
-            currentDice.reset()
-        self.attackDice = 0
-        self.healDice = 0
-        self.pointsDice = [0, 0, 0]
-        self.remainingRolls = constants.ROLLS_PER_TURN
-
-    def resetPlayer(self):
-        self.resetAllDice()
-        self.lives = constants.MAX_LIVES
-        self.points = 0
-        self.myTurn = False
-        self.playerWon = False
-        self.playerLost = False
-
+# Play methods
     def processRoll(self):
         for currentDice in self.playerDice:
             if(currentDice.getValue() == constants.DiceValues.attack):
@@ -82,32 +52,6 @@ class Player:
             if(not currentDice.kept):
                 currentDice.roll()
 
-    def getPlayerDice(self):
-        diceList = []
-        for currentDice in self.playerDice:
-            diceList.append(currentDice.getValueAsString())
-        return diceList
-
-    def isItPlayerTurn(self):
-        return (self.myTurn)
-
-    def setPlayerTurn(self):
-        self.resetAllDice()
-        self.myTurn = True
-
-    def getPlayerID(self):
-        return self.ID
-
-    def printPlayerStatus(self):
-        # print 'Player', self.ID
-        print 'Points:', self.points
-        print 'Lives:', self.lives
-
-    def printPlayerDice(self):
-        print 'Attack dice:', self.attackDice
-        print 'Heal dice:', self.healDice
-        print 'Point [1,2,3] dice:', self.pointsDice
-
     def play(self):
         if (not self.myTurn or self.playerWon or self.playerLost):
             return
@@ -122,8 +66,68 @@ class Player:
             self.remainingRolls = constants.ROLLS_PER_TURN
             self.myTurn = False
 
+# Setters
+    def takeDamage(self, damagePoints):
+        self.lives -= damagePoints
+        if (self.lives <= 0):
+            self.lives = 0
+            self.myTurn = False
+            self.playerLost = True
+
+    def healDamage(self, healAmmount):
+        self.lives += healAmmount
+        if (self.lives > constants.MAX_LIVES):
+            self.lives = constants.MAX_LIVES
+
+    def setPlayerTurn(self):
+        self.resetAllDice()
+        self.myTurn = True
+
+# Getters & Printers
+    def attack(self):
+        return self.attackDice
+
+    def isItPlayerTurn(self):
+        return (self.myTurn)
+
     def didPlayerWin(self):
         return self.playerWon
 
     def didPlayerLose(self):
         return self.playerLost
+
+    def getPlayerDice(self):
+        diceList = []
+        for currentDice in self.playerDice:
+            diceList.append(currentDice.getValueAsString())
+        return diceList
+
+    def getPlayerID(self):
+        return self.ID
+
+    def printPlayerStatus(self):
+        # print 'Player', self.ID
+        print 'Points:', self.points
+        print 'Lives:', self.lives
+
+    def printPlayerDice(self):
+        print 'Attack dice:', self.attackDice
+        print 'Heal dice:', self.healDice
+        print 'Point [1,2,3] dice:', self.pointsDice
+
+# Resetters
+    def resetAllDice(self):
+        for currentDice in self.playerDice:
+            currentDice.reset()
+        self.attackDice = 0
+        self.healDice = 0
+        self.pointsDice = [0, 0, 0]
+        self.remainingRolls = constants.ROLLS_PER_TURN
+
+    def resetPlayer(self):
+        self.resetAllDice()
+        self.lives = constants.MAX_LIVES
+        self.points = 0
+        self.myTurn = False
+        self.playerWon = False
+        self.playerLost = False
