@@ -1,8 +1,10 @@
 import constants
 from dice import Dice
 
+
 class Player:
     nPlayers = 0
+
     def __init__(self):
         Player.nPlayers += 1
         self.ID = Player.nPlayers
@@ -32,24 +34,29 @@ class Player:
         return self.attackDice
 
     def resetDice(self):
-        for i in len(self.playerDice):
-            self.playerDice[i].reset()
+        for currentDice in self.playerDice:
+            currentDice.reset()
 
     def resetPlayer(self):
         self.resetDice()
         self.lives = constants.MAX_LIVES
         self.points = 0
+        self.attackDice = 0
+        self.healDice = 0
+        self.pointDice = [0, 0, 0]
 
     def processPlay(self):
-        for i in len(self.playerDice):
-            if(self.playerDice[i].getValue == constants.DiceValues.attack):
+        for currentDice in self.playerDice:
+            if(currentDice.getValue() == constants.DiceValues.attack):
                 self.attackDice += 1
-            elif(self.playerDice[i].getValue == constants.DiceValues.heal):
+            elif(currentDice.getValue() == constants.DiceValues.heal):
                 self.healDice += 1
             else:
-                self.pointDice[self.playerDice[i].getValue-1] += 1
+                self.pointDice[currentDice.getValue()] += 1
 
     def addPoints(self):
-        for i in len(self.pointDice):
-            if(self.pointDice[i] // MIN_DICE_FOR_POINTS):
-                self.points = i + self.pointDice[i] % MIN_DICE_FOR_POINTS
+        # print 'Point dice list:', self.pointDice
+        for i, roundPoints in enumerate(self.pointDice):
+            if(roundPoints // constants.MIN_DICE_FOR_POINTS):
+                self.points += (i + 1) + roundPoints % constants.MIN_DICE_FOR_POINTS
+                # print 'Points after adding', i+1, ':', self.points

@@ -1,7 +1,8 @@
 import unittest
 import constants
 from dice import Dice
-from player import Player 
+from player import Player
+
 
 class TestDice(unittest.TestCase):
 
@@ -23,30 +24,66 @@ class TestDice(unittest.TestCase):
             if (testedDice.getValue() < minVal):
                 minVal = testedDice.getValue()
             self.assertGreaterEqual(testedDice.getValue, 0)
-            self.assertLess(testedDice.getValue(),constants.N_FACES_DICE)
+            self.assertLess(testedDice.getValue(), constants.N_FACES_DICE)
         self.assertEqual(maxVal, constants.N_FACES_DICE-1)
         self.assertEqual(minVal, 0)
         # print '[DICE] PASS: roll() always generates numbers between', minVal, 'and', maxVal, 'for', constants.N_FACES_DICE, '-sided dice for', nTests, 'tests.'
+
 
 class TestPlayer(unittest.TestCase):
 
     def testInit(self):
         testedPlayer = Player()
-        self.assertEqual(testedPlayer.ID,Player.nPlayers)
+        self.assertEqual(testedPlayer.ID, Player.nPlayers)
         testedPlayer2 = Player()
-        self.assertNotEqual(testedPlayer.ID,Player.nPlayers)
-        self.assertEqual(testedPlayer2.ID,Player.nPlayers)
-        self.assertEqual(len(testedPlayer.playerDice),constants.STARTING_DICE_NUMBER)
+        self.assertNotEqual(testedPlayer.ID, Player.nPlayers)
+        self.assertEqual(testedPlayer2.ID, Player.nPlayers)
+        self.assertEqual(len(testedPlayer.playerDice), constants.STARTING_DICE_NUMBER)
 
     def testProcessPlay(self):
         testedPlayer = Player()
-        # Check one dice for each value
-        for i in len(testedPlayer.playerDice):
-            testedPlayer.playerDice[i].currentValue = i + 1
+
+        # Assign dice values
+        # One dice for each value, two for attack
+        for i, currentDice in enumerate(testedPlayer.playerDice):
+            currentDice.currentValue = i
+        testedPlayer.playerDice[5].currentValue = constants.DiceValues.attack
+        # Process play
         testedPlayer.processPlay()
-        self.assertEqual(testedPlayer.attackDice, 1)
+        # Assert
+        self.assertEqual(testedPlayer.attackDice, 2)
         self.assertEqual(testedPlayer.healDice, 1)
         testedPlayer.addPoints()
         self.assertEqual(testedPlayer.points, 0)
-        # Check no heal and 3 ones
-        # testedPlayer.playerDice = []
+
+        testedPlayer.resetPlayer()
+        # Assign dice values
+        testedPlayer.playerDice[0].currentValue = constants.DiceValues.two
+        testedPlayer.playerDice[1].currentValue = constants.DiceValues.three
+        testedPlayer.playerDice[2].currentValue = constants.DiceValues.two
+        testedPlayer.playerDice[3].currentValue = constants.DiceValues.two
+        testedPlayer.playerDice[4].currentValue = constants.DiceValues.three
+        testedPlayer.playerDice[5].currentValue = constants.DiceValues.two
+        # Process play
+        testedPlayer.processPlay()
+        # Assert
+        self.assertEqual(testedPlayer.attackDice, 0)
+        self.assertEqual(testedPlayer.healDice, 0)
+        testedPlayer.addPoints()
+        self.assertEqual(testedPlayer.points, 3)
+
+        testedPlayer.resetPlayer()
+        # Assign dice values
+        testedPlayer.playerDice[0].currentValue = constants.DiceValues.three
+        testedPlayer.playerDice[1].currentValue = constants.DiceValues.three
+        testedPlayer.playerDice[2].currentValue = constants.DiceValues.two
+        testedPlayer.playerDice[3].currentValue = constants.DiceValues.two
+        testedPlayer.playerDice[4].currentValue = constants.DiceValues.three
+        testedPlayer.playerDice[5].currentValue = constants.DiceValues.two
+        # Process play
+        testedPlayer.processPlay()
+        # Assert
+        self.assertEqual(testedPlayer.attackDice, 0)
+        self.assertEqual(testedPlayer.healDice, 0)
+        testedPlayer.addPoints()
+        self.assertEqual(testedPlayer.points, 5)

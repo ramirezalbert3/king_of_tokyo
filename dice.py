@@ -1,6 +1,7 @@
 import constants
 import random
 
+
 class Dice:
     # Methods
     def __init__(self):
@@ -8,11 +9,11 @@ class Dice:
         self.nFaces = constants.N_FACES_DICE
 
     def roll(self):
-        self.currentValue = random.randrange(0,constants.N_FACES_DICE,1)
+        self.currentValue = random.randrange(0, constants.N_FACES_DICE, 1)
         return self.currentValue
 
     def reset(self):
         self.currentValue = 0
 
     def getValue(self):
-        return self.currentValue 
+        return self.currentValue
