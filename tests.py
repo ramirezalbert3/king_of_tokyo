@@ -41,7 +41,8 @@ class TestPlayer(unittest.TestCase):
         testedPlayer2 = Player()
         self.assertNotEqual(testedPlayer.ID, Player.nPlayers)
         self.assertEqual(testedPlayer2.ID, Player.nPlayers)
-        self.assertEqual(len(testedPlayer.playerDice), constants.STARTING_DICE_NUMBER)
+        initialNumDice = len(testedPlayer.playerDice)
+        self.assertEqual(initialNumDice, constants.STARTING_DICE_NUMBER)
 
     def testWin(self):
         testedPlayer = Player()
@@ -65,7 +66,6 @@ class TestPlayer(unittest.TestCase):
         testedPlayer.takeDamage(7)
         self.assertTrue(testedPlayer.didPlayerLose())
         self.assertEqual(testedPlayer.lives, 0)
-
 
     def testProcessRoll(self):
         testedPlayer = Player()
