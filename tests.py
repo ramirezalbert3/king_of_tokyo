@@ -43,6 +43,30 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(testedPlayer2.ID, Player.nPlayers)
         self.assertEqual(len(testedPlayer.playerDice), constants.STARTING_DICE_NUMBER)
 
+    def testWin(self):
+        testedPlayer = Player()
+        self.assertEqual(testedPlayer.points, 0)
+        self.assertFalse(testedPlayer.didPlayerWin())
+        while(not testedPlayer.didPlayerWin()):
+            if(not testedPlayer.isItPlayerTurn()):
+                testedPlayer.setPlayerTurn()
+            testedPlayer.play()
+        self.assertEqual(testedPlayer.points, 20)
+        self.assertTrue(testedPlayer.didPlayerWin())
+        testedPlayer.play()
+        self.assertEqual(testedPlayer.points, 20)
+
+    def testLose(self):
+        testedPlayer = Player()
+        self.assertFalse(testedPlayer.didPlayerLose())
+        testedPlayer.takeDamage(5)
+        self.assertFalse(testedPlayer.didPlayerLose())
+        self.assertEqual(testedPlayer.lives, constants.MAX_LIVES-5)
+        testedPlayer.takeDamage(7)
+        self.assertTrue(testedPlayer.didPlayerLose())
+        self.assertEqual(testedPlayer.lives, 0)
+
+
     def testProcessRoll(self):
         testedPlayer = Player()
         # Assign dice values
