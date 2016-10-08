@@ -22,6 +22,16 @@ class TestDice(unittest.TestCase):
         self.assertEqual(maxVal, constants.N_FACES_DICE-1)
         self.assertEqual(minVal, 0)
 
+    def testKeep(self):
+        testedDice = Dice()
+        nTests = 3
+        testedDice.roll()
+        diceVal = testedDice.getValue()
+        testedDice.keepDice()
+        for j in range(nTests):
+            testedDice.roll()
+            self.assertEqual(diceVal, testedDice.getValue())
+
 
 class TestPlayer(unittest.TestCase):
 
