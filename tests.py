@@ -32,6 +32,11 @@ class TestDice(unittest.TestCase):
             testedDice.roll()
             self.assertEqual(diceVal, testedDice.getValue())
 
+    def testGetValue(self):
+        testedDice = Dice()
+        testedDice.currentValue = constants.DiceValues.heal
+        self.assertEqual(testedDice.getValueAsString(), 'heal')
+
 
 class TestPlayer(unittest.TestCase):
 
@@ -80,7 +85,7 @@ class TestPlayer(unittest.TestCase):
         # Process play
         testedPlayer.processRoll()
         # Assert
-        self.assertEqual(testedPlayer.attackDice, 2)
+        self.assertEqual(testedPlayer.attack(), 2)
         self.assertEqual(testedPlayer.healDice, 1)
         testedPlayer.addPoints()
         self.assertEqual(testedPlayer.points, 0)
@@ -95,7 +100,7 @@ class TestPlayer(unittest.TestCase):
         # Process roll
         testedPlayer.processRoll()
         # Assert
-        self.assertEqual(testedPlayer.attackDice, 0)
+        self.assertEqual(testedPlayer.attack(), 0)
         self.assertEqual(testedPlayer.healDice, 0)
         testedPlayer.addPoints()
         self.assertEqual(testedPlayer.points, 3)
@@ -110,7 +115,17 @@ class TestPlayer(unittest.TestCase):
         # Process play
         testedPlayer.processRoll()
         # Assert
-        self.assertEqual(testedPlayer.attackDice, 0)
+        self.assertEqual(testedPlayer.attack(), 0)
         self.assertEqual(testedPlayer.healDice, 0)
         testedPlayer.addPoints()
         self.assertEqual(testedPlayer.points, 5)
+        # Test getPlayerDice()
+        inputDiceList = []
+        inputDiceList.append(constants.DiceValues.three.name)
+        inputDiceList.append(constants.DiceValues.three.name)
+        inputDiceList.append(constants.DiceValues.two.name)
+        inputDiceList.append(constants.DiceValues.two.name)
+        inputDiceList.append(constants.DiceValues.three.name)
+        inputDiceList.append(constants.DiceValues.two.name)
+        resultDiceList = testedPlayer.getPlayerDice()
+        self.assertEqual(resultDiceList, inputDiceList)

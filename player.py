@@ -102,9 +102,6 @@ class Player:
             diceList.append(currentDice.getValueAsString())
         return diceList
 
-    def getPlayerID(self):
-        return self.ID
-
     def printPlayerStatus(self):
         # print 'Player', self.ID
         print 'Points:', self.points
