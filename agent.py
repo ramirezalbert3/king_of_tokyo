@@ -1,15 +1,25 @@
-from player import Player
-
 """
 Useful definitions:
 V(s) = max_{a in actions} Q(s,a)
 policy(s) = arg_max_{a in actions} Q(s,a)
+
+Also from: http://artint.info/html/ArtInt_227.html
+Qk+1(s,a) 	= ∑s' P(s'|s,a) (R(s,a,s')+ γVk(s'))  for k ≥ 0
+Vk(s) 	= maxa Qk(s,a)  for k>0
 """
 
 
-class Agent(Player):
-    def __init__(self):
-        pass
+# Maybe this class should NOT be game specific
+# Does it need to inherit? Maybe only Class Game needs to know about Player
+class Agent():
+    def __init__(self, alpha=1.0, epsilon=0.05, gamma=0.8):
+        self.epsilon = epsilon  # (exploration prob)
+        self.alpha = alpha  # (learning rate)
+        self.gamma = gamma  # (discount rate)
+        self.states = []
+        self.V = []
+        self.Q = []
+        self.Policy = []
 
     # Return Q-value for a given pair "state & action"
     def getQValue(self, state, action):

@@ -42,10 +42,10 @@ class TestPlayer(unittest.TestCase):
 
     def testInit(self):
         testedPlayer = Player()
-        self.assertEqual(testedPlayer.ID, Player.nPlayers)
+        self.assertEqual(testedPlayer.ID, Player.nPlayers-1)
         testedPlayer2 = Player()
-        self.assertNotEqual(testedPlayer.ID, Player.nPlayers)
-        self.assertEqual(testedPlayer2.ID, Player.nPlayers)
+        self.assertNotEqual(testedPlayer.ID, Player.nPlayers-1)
+        self.assertEqual(testedPlayer2.ID, Player.nPlayers-1)
         initialNumDice = len(testedPlayer.playerDice)
         self.assertEqual(initialNumDice, constants.STARTING_DICE_NUMBER)
 

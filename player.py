@@ -6,8 +6,8 @@ class Player:
     nPlayers = 0
 
     def __init__(self):
-        Player.nPlayers += 1
         self.ID = Player.nPlayers
+        Player.nPlayers += 1
         self.lives = constants.MAX_LIVES
         self.points = 0
         self.myTurn = False
