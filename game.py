@@ -23,10 +23,12 @@ Getting opponents closer to 0 lives?
 # This class should probably be game-specific (King of Tokyo in this case)
 # Should return all game-specific values (states, legalActions, etc)
 class Game:
-    def __init__(self, nPlayers):
+    def __init__(self, nPlayers=2):
         self.nPlayers = nPlayers
         self.playerList = []
-        for i in nPlayers:
+        pAdded = 0
+        while (pAdded < nPlayers):
+            pAdded += 1
             self.playerList.append(Player())
 
     def getState(self, playerID):
@@ -48,16 +50,23 @@ class Game:
         For 4 dice, 0110 (6) means we keep dice 1 & 2 and roll 0 & 3
         '''
         legalActionsList = []
-        numLegalActions = 2 ^ len(self.playerList[playerID].playerDice)
+        numLegalActions = 2 ** len(self.playerList[playerID].playerDice)
         for i in range(numLegalActions):
             legalActionsList.append(i)
         return legalActionsList
 
-    def doWeKeepDice(self, legalAction, diceToKeep):
+    def doWeKeepDice(self, legalAction, diceToKeep, playerID):
         '''
         To know if we keep a given dice we shift bites (>>) and & with True
         For previous example:
-        doWeKeepDice(1): (6 >> 1 & True) = True
+        doWeKeepDice(6, 1): (6 >> 1 & True) = True
         Where 6 is the legalAction processed and 1 is the dice we might keep
         '''
+        if(diceToKeep > len(self.playerList[playerID].playerDice)):
+            return False  # Probably should return something else
         return ((legalAction >> diceToKeep) & True)
+
+    def resetGame(self):
+        self.nPlayers = 0
+        self.playerList = []
+        Player.nPlayers = 0
