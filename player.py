@@ -86,7 +86,7 @@ class Player:
         self.myTurn = True
 
     def setDiceWithString(self, diceString):
-        assert (len(diceString) == len(self.playerDice)), "setDiceWithString: provide a right string for the number of dice"
+        assert (len(diceString) == len(self.playerDice)), "Need right string length for the number of dice"
         diceString = diceString.lower()
         for i, currentDice in enumerate(self.playerDice):
             if(diceString[i] == 'h'):
@@ -100,7 +100,7 @@ class Player:
             elif(diceString[i] == '3'):
                 currentDice.currentValue = constants.DiceValues.three
             else:
-                assert (False), "setDiceWithString: Unknown dice value in diceString"
+                assert (False), "Unknown dice value in diceString"
 
 # Getters & Printers
     def attack(self):

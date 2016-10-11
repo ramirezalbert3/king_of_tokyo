@@ -89,14 +89,14 @@ class TestPlayer(unittest.TestCase):
             b = testedPlayer.setDiceWithString("1")
             self.fail("Should have asserted")
         except AssertionError, e:
-            self.assertEquals( "setDiceWithString: provide a right string for the number of dice", e.message )
+            self.assertEquals( "Need right string length for the number of dice", e.message )
 
         # Assertion when accessing more dice than we have
         try:
             b = testedPlayer.setDiceWithString("a213G1")
             self.fail("Should have asserted")
         except AssertionError, e:
-            self.assertEquals( "setDiceWithString: Unknown dice value in diceString", e.message )
+            self.assertEquals( "Unknown dice value in diceString", e.message )
 
     def testProcessRoll(self):
         testedPlayer = Player()
