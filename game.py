@@ -62,8 +62,7 @@ class Game:
         doWeKeepDice(6, 1): (6 >> 1 & True) = True
         Where 6 is the legalAction processed and 1 is the dice we might keep
         '''
-        if(diceToKeep > len(self.playerList[playerID].playerDice)):
-            return False  # Probably should return something else
+        assert (diceToKeep <= len(self.playerList[playerID].playerDice)), "Keeping more dice than we have"
         return ((legalAction >> diceToKeep) & True)
 
     def resetGame(self):

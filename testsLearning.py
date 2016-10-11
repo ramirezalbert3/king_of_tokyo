@@ -32,9 +32,27 @@ class TestGame(unittest.TestCase):
 
     def testDoWeKeepDice(self):
         testedGame = Game()
-        # This is a pretty bad test
-        self.assertTrue(testedGame.doWeKeepDice(1, 0, 0))
-        self.assertTrue(testedGame.doWeKeepDice(8, 3, 0))
-        self.assertTrue(testedGame.doWeKeepDice(64, constants.STARTING_DICE_NUMBER, 0))
-        self.assertFalse(testedGame.doWeKeepDice(1, constants.STARTING_DICE_NUMBER+1, 0))
-        self.assertFalse(testedGame.doWeKeepDice(5, 1, 0))
+        # Case definition
+        legalAction = []
+        legalAction.append(1)  # Legal action 0: 0001 = 1
+        legalAction.append(14)  # Legal action 1: 1110 = 14
+
+        def fTestKeep(actionID, diceToKeep):
+            # Checking only for player one
+            return testedGame.doWeKeepDice(legalAction[actionID], diceToKeep, 0)
+
+        # Legal action 0
+        self.assertTrue(fTestKeep(0 ,0))
+        self.assertFalse(fTestKeep(0, 1))
+
+        # Legal action 1
+        self.assertFalse(fTestKeep(1, 0))
+        self.assertTrue(fTestKeep(1, 2))
+        self.assertTrue(fTestKeep(1, 3))
+
+        # Assertion when accessing more dice than we have
+        try:
+            b = fTestKeep(1, constants.STARTING_DICE_NUMBER+1)
+            self.fail("Should have asserted")
+        except AssertionError, e:
+            self.assertEquals( "Keeping more dice than we have", e.message )

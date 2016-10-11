@@ -76,7 +76,7 @@ class TestPlayer(unittest.TestCase):
 
     def testSetDiceWithString(self):
         testedPlayer = Player()
-        testedPlayer.setDiceWithString('a213h1')
+        testedPlayer.setDiceWithString('a213H1')  # Also 'test' conversion to lower-case
         self.assertEqual(testedPlayer.playerDice[0], constants.DiceValues.attack)
         self.assertEqual(testedPlayer.playerDice[1], constants.DiceValues.two)
         self.assertEqual(testedPlayer.playerDice[2], constants.DiceValues.one)
@@ -84,6 +84,19 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(testedPlayer.playerDice[4], constants.DiceValues.heal)
         self.assertEqual(testedPlayer.playerDice[5], constants.DiceValues.one)
         self.assertFalse(testedPlayer.playerDice[5] == constants.DiceValues.two)
+        # Assertion when accessing more dice than we have
+        try:
+            b = testedPlayer.setDiceWithString("1")
+            self.fail("Should have asserted")
+        except AssertionError, e:
+            self.assertEquals( "setDiceWithString: provide a right string for the number of dice", e.message )
+
+        # Assertion when accessing more dice than we have
+        try:
+            b = testedPlayer.setDiceWithString("a213G1")
+            self.fail("Should have asserted")
+        except AssertionError, e:
+            self.assertEquals( "setDiceWithString: Unknown dice value in diceString", e.message )
 
     def testProcessRoll(self):
         testedPlayer = Player()
