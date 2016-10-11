@@ -22,9 +22,6 @@ class Dice:
     def keepDice(self):
         self.kept = True
 
-    def getValue(self):
-        return self.currentValue
-
     def getValueAsString(self):
         for valString in constants.DiceValues:
             if (self.currentValue == valString):

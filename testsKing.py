@@ -13,12 +13,12 @@ class TestDice(unittest.TestCase):
         nTests = 50
         for i in range(nTests):
             testedDice.roll()
-            if (testedDice.getValue() > maxVal):
-                maxVal = testedDice.getValue()
-            if (testedDice.getValue() < minVal):
-                minVal = testedDice.getValue()
-            self.assertGreaterEqual(testedDice.getValue, 0)
-            self.assertLess(testedDice.getValue(), constants.N_FACES_DICE)
+            if (testedDice.currentValue > maxVal):
+                maxVal = testedDice.currentValue
+            if (testedDice.currentValue < minVal):
+                minVal = testedDice.currentValue
+            self.assertGreaterEqual(testedDice.currentValue, 0)
+            self.assertLess(testedDice.currentValue, constants.N_FACES_DICE)
         self.assertEqual(maxVal, constants.N_FACES_DICE-1)
         self.assertEqual(minVal, 0)
 
@@ -26,11 +26,11 @@ class TestDice(unittest.TestCase):
         testedDice = Dice()
         nTests = 3
         testedDice.roll()
-        diceVal = testedDice.getValue()
+        diceVal = testedDice.currentValue
         testedDice.keepDice()
         for j in range(nTests):
             testedDice.roll()
-            self.assertEqual(diceVal, testedDice.getValue())
+            self.assertEqual(diceVal, testedDice.currentValue)
 
     def testGetValue(self):
         testedDice = Dice()

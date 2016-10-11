@@ -24,12 +24,12 @@ class Player:
 # Play methods
     def processRoll(self):
         for currentDice in self.playerDice:
-            if(currentDice.getValue() == constants.DiceValues.attack):
+            if(currentDice.currentValue == constants.DiceValues.attack):
                 self.attackDice += 1
-            elif(currentDice.getValue() == constants.DiceValues.heal):
+            elif(currentDice.currentValue == constants.DiceValues.heal):
                 self.healDice += 1
             else:
-                self.pointsDice[currentDice.getValue()] += 1
+                self.pointsDice[currentDice.currentValue] += 1
 
     def addPoints(self):
         for i, roundPoints in enumerate(self.pointsDice):
@@ -102,12 +102,12 @@ class Player:
             diceList.append(currentDice.getValueAsString())
         return diceList
 
-    def printPlayerStatus(self):
+    def printPlayerStatus(self):  # pragma: no cover
         # print 'Player', self.ID
         print 'Points:', self.points
         print 'Lives:', self.lives
 
-    def printPlayerDice(self):
+    def printPlayerDice(self):  # pragma: no cover
         print 'Attack dice:', self.attackDice
         print 'Heal dice:', self.healDice
         print 'Point [1,2,3] dice:', self.pointsDice
