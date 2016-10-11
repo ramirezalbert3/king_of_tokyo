@@ -87,21 +87,22 @@ class Player:
 
     def setDiceWithString(self, diceString):
         if(len(diceString) < len(self.playerDice)):
-            print 'setDiceWithString: rovide a string that covers all dice'
-            return
-        for i, currentDice in enumerate(self.playerDice):
-            if(diceString[i] == 'h'):
-                currentDice.currentValue = constants.DiceValues.heal
-            elif(diceString[i] == 'a'):
-                currentDice.currentValue = constants.DiceValues.attack
-            elif(diceString[i] == '1'):
-                currentDice.currentValue = constants.DiceValues.one
-            elif(diceString[i] == '2'):
-                currentDice.currentValue = constants.DiceValues.two
-            elif(diceString[i] == '3'):
-                currentDice.currentValue = constants.DiceValues.three
-            else:
-                print 'setDiceWithString: Unknown dice value in diceString'
+            print 'setDiceWithString: provide a string that covers all dice'  # pragma: no cover
+        else:
+            diceString = diceString.lower()
+            for i, currentDice in enumerate(self.playerDice):
+                if(diceString[i] == 'h'):
+                    currentDice.currentValue = constants.DiceValues.heal
+                elif(diceString[i] == 'a'):
+                    currentDice.currentValue = constants.DiceValues.attack
+                elif(diceString[i] == '1'):
+                    currentDice.currentValue = constants.DiceValues.one
+                elif(diceString[i] == '2'):
+                    currentDice.currentValue = constants.DiceValues.two
+                elif(diceString[i] == '3'):
+                    currentDice.currentValue = constants.DiceValues.three
+                else:
+                    print 'setDiceWithString: Unknown dice value in diceString'  # pragma: no cover
 
 # Getters & Printers
     def attack(self):

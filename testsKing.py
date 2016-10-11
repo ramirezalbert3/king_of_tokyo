@@ -88,7 +88,6 @@ class TestPlayer(unittest.TestCase):
     def testProcessRoll(self):
         testedPlayer = Player()
         # Assign dice values
-        # One dice for each value, two for attack
         testedPlayer.setDiceWithString("a3a21h")
         testedPlayer.remainingRolls = 0
         # Process play
@@ -112,24 +111,28 @@ class TestPlayer(unittest.TestCase):
         testedPlayer.resetPlayer()
         # Assign dice values
         testedPlayer.setDiceWithString("332232")
-        testedPlayer.remainingRolls = 0
         # Process play
         testedPlayer.processRoll()
         testedPlayer.addPoints()
         # Assert
         self.assertEqual(testedPlayer.attack(), 0)
         self.assertEqual(testedPlayer.healDice, 0)
+        self.assertEqual(testedPlayer.points, 0)
+        testedPlayer.remainingRolls = 0
+        testedPlayer.addPoints()
         self.assertEqual(testedPlayer.points, 5)
+
         
     def testGetPlayerDice(self):
+        testedPlayer = Player()
         testedPlayer.setDiceWithString("a3a21h")
         testedPlayer.remainingRolls = 0
         resultDiceList = testedPlayer.getPlayerDice()
         inputDiceList = []
+        inputDiceList.append(constants.DiceValues.attack.name)
         inputDiceList.append(constants.DiceValues.three.name)
-        inputDiceList.append(constants.DiceValues.three.name)
+        inputDiceList.append(constants.DiceValues.attack.name)
         inputDiceList.append(constants.DiceValues.two.name)
-        inputDiceList.append(constants.DiceValues.two.name)
-        inputDiceList.append(constants.DiceValues.three.name)
-        inputDiceList.append(constants.DiceValues.two.name)
+        inputDiceList.append(constants.DiceValues.one.name)
+        inputDiceList.append(constants.DiceValues.heal.name)
         self.assertEqual(resultDiceList, inputDiceList)
