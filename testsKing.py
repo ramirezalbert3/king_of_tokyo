@@ -84,14 +84,14 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(testedPlayer.playerDice[4], constants.DiceValues.heal)
         self.assertEqual(testedPlayer.playerDice[5], constants.DiceValues.one)
         self.assertFalse(testedPlayer.playerDice[5] == constants.DiceValues.two)
-        # Assertion when accessing more dice than we have
+        # Assertion for wrong length inputs
         try:
             b = testedPlayer.setDiceWithString("1")
             self.fail("Should have asserted")
         except AssertionError, e:
             self.assertEquals( "Need right string length for the number of dice", e.message )
 
-        # Assertion when accessing more dice than we have
+        # Assertion for wrong character input
         try:
             b = testedPlayer.setDiceWithString("a213G1")
             self.fail("Should have asserted")
