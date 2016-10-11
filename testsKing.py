@@ -68,58 +68,63 @@ class TestPlayer(unittest.TestCase):
         testedPlayer.takeDamage(5)
         self.assertFalse(testedPlayer.didPlayerLose())
         self.assertEqual(testedPlayer.lives, constants.MAX_LIVES-5)
-        testedPlayer.takeDamage(7)
+        testedPlayer.takeDamage(5)
         self.assertTrue(testedPlayer.didPlayerLose())
         self.assertEqual(testedPlayer.lives, 0)
+        testedPlayer.takeDamage(1)
+        self.assertEqual(testedPlayer.lives, 0)
+
+    def testSetDiceWithString(self):
+        testedPlayer = Player()
+        testedPlayer.setDiceWithString('a213h1')
+        self.assertEqual(testedPlayer.playerDice[0], constants.DiceValues.attack)
+        self.assertEqual(testedPlayer.playerDice[1], constants.DiceValues.two)
+        self.assertEqual(testedPlayer.playerDice[2], constants.DiceValues.one)
+        self.assertEqual(testedPlayer.playerDice[3], constants.DiceValues.three)
+        self.assertEqual(testedPlayer.playerDice[4], constants.DiceValues.heal)
+        self.assertEqual(testedPlayer.playerDice[5], constants.DiceValues.one)
+        self.assertFalse(testedPlayer.playerDice[5] == constants.DiceValues.two)
 
     def testProcessRoll(self):
         testedPlayer = Player()
         # Assign dice values
         # One dice for each value, two for attack
-        testedPlayer.playerDice[0].currentValue = constants.DiceValues.attack
-        testedPlayer.playerDice[1].currentValue = constants.DiceValues.three
-        testedPlayer.playerDice[2].currentValue = constants.DiceValues.attack
-        testedPlayer.playerDice[3].currentValue = constants.DiceValues.two
-        testedPlayer.playerDice[4].currentValue = constants.DiceValues.one
-        testedPlayer.playerDice[5].currentValue = constants.DiceValues.heal
+        testedPlayer.setDiceWithString("a3a21h")
+        testedPlayer.remainingRolls = 0
         # Process play
         testedPlayer.processRoll()
+        testedPlayer.addPoints()
         # Assert
         self.assertEqual(testedPlayer.attack(), 2)
         self.assertEqual(testedPlayer.healDice, 1)
-        testedPlayer.addPoints()
         self.assertEqual(testedPlayer.points, 0)
         testedPlayer.resetPlayer()
         # Assign dice values
-        testedPlayer.playerDice[0].currentValue = constants.DiceValues.two
-        testedPlayer.playerDice[1].currentValue = constants.DiceValues.three
-        testedPlayer.playerDice[2].currentValue = constants.DiceValues.two
-        testedPlayer.playerDice[3].currentValue = constants.DiceValues.two
-        testedPlayer.playerDice[4].currentValue = constants.DiceValues.three
-        testedPlayer.playerDice[5].currentValue = constants.DiceValues.two
+        testedPlayer.setDiceWithString("232232")
+        testedPlayer.remainingRolls = 0
         # Process roll
         testedPlayer.processRoll()
+        testedPlayer.addPoints()
         # Assert
         self.assertEqual(testedPlayer.attack(), 0)
         self.assertEqual(testedPlayer.healDice, 0)
-        testedPlayer.addPoints()
         self.assertEqual(testedPlayer.points, 3)
         testedPlayer.resetPlayer()
         # Assign dice values
-        testedPlayer.playerDice[0].currentValue = constants.DiceValues.three
-        testedPlayer.playerDice[1].currentValue = constants.DiceValues.three
-        testedPlayer.playerDice[2].currentValue = constants.DiceValues.two
-        testedPlayer.playerDice[3].currentValue = constants.DiceValues.two
-        testedPlayer.playerDice[4].currentValue = constants.DiceValues.three
-        testedPlayer.playerDice[5].currentValue = constants.DiceValues.two
+        testedPlayer.setDiceWithString("332232")
+        testedPlayer.remainingRolls = 0
         # Process play
         testedPlayer.processRoll()
+        testedPlayer.addPoints()
         # Assert
         self.assertEqual(testedPlayer.attack(), 0)
         self.assertEqual(testedPlayer.healDice, 0)
-        testedPlayer.addPoints()
         self.assertEqual(testedPlayer.points, 5)
-        # Test getPlayerDice()
+        
+    def testGetPlayerDice(self):
+        testedPlayer.setDiceWithString("a3a21h")
+        testedPlayer.remainingRolls = 0
+        resultDiceList = testedPlayer.getPlayerDice()
         inputDiceList = []
         inputDiceList.append(constants.DiceValues.three.name)
         inputDiceList.append(constants.DiceValues.three.name)
@@ -127,5 +132,4 @@ class TestPlayer(unittest.TestCase):
         inputDiceList.append(constants.DiceValues.two.name)
         inputDiceList.append(constants.DiceValues.three.name)
         inputDiceList.append(constants.DiceValues.two.name)
-        resultDiceList = testedPlayer.getPlayerDice()
         self.assertEqual(resultDiceList, inputDiceList)

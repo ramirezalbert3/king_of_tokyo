@@ -32,6 +32,8 @@ class Player:
                 self.pointsDice[currentDice.currentValue] += 1
 
     def addPoints(self):
+        if (self.remainingRolls != 0):
+            return
         for i, roundPoints in enumerate(self.pointsDice):
             # Points if 3 equal dice
             if(roundPoints // constants.MIN_DICE_FOR_POINTS):
@@ -82,6 +84,24 @@ class Player:
     def setPlayerTurn(self):
         self.resetAllDice()
         self.myTurn = True
+
+    def setDiceWithString(self, diceString):
+        if(len(diceString) < len(self.playerDice)):
+            print 'setDiceWithString: rovide a string that covers all dice'
+            return
+        for i, currentDice in enumerate(self.playerDice):
+            if(diceString[i] == 'h'):
+                currentDice.currentValue = constants.DiceValues.heal
+            elif(diceString[i] == 'a'):
+                currentDice.currentValue = constants.DiceValues.attack
+            elif(diceString[i] == '1'):
+                currentDice.currentValue = constants.DiceValues.one
+            elif(diceString[i] == '2'):
+                currentDice.currentValue = constants.DiceValues.two
+            elif(diceString[i] == '3'):
+                currentDice.currentValue = constants.DiceValues.three
+            else:
+                print 'setDiceWithString: Unknown dice value in diceString'
 
 # Getters & Printers
     def attack(self):
