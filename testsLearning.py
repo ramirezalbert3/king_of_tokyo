@@ -1,6 +1,7 @@
 import unittest
 import constants
 from game import Game
+from kingAgent import KingAgent
 
 
 class TestGame(unittest.TestCase):
@@ -23,26 +24,27 @@ class TestGame(unittest.TestCase):
                 pProcessed += 1
             self.assertEqual(testedGame.getState(0), initialState)
 
+
+class TestKingAgent(unittest.TestCase):
     def testGetLegalActions(self):
-        testedGame = Game()
+        testedAgent = KingAgent()
         listedActions = []
         for i in range(2 ** constants.STARTING_DICE_NUMBER):
             listedActions.append(i)
-        self.assertEqual(testedGame.getLegalActions(0), listedActions)
+        self.assertEqual(testedAgent.getLegalActions(), listedActions)
 
     def testDoWeKeepDice(self):
-        testedGame = Game()
+        testedAgent = KingAgent()
         # Case definition
         legalAction = []
         legalAction.append(1)  # Legal action 0: 0001 = 1
         legalAction.append(14)  # Legal action 1: 1110 = 14
 
         def fTestKeep(actionID, diceToKeep):
-            # Checking only for player one
-            return testedGame.doWeKeepDice(legalAction[actionID], diceToKeep, 0)
+            return testedAgent.doWeKeepDice(legalAction[actionID], diceToKeep)
 
         # Legal action 0
-        self.assertTrue(fTestKeep(0 ,0))
+        self.assertTrue(fTestKeep(0, 0))
         self.assertFalse(fTestKeep(0, 1))
 
         # Legal action 1
@@ -52,7 +54,7 @@ class TestGame(unittest.TestCase):
 
         # Assertion when accessing more dice than we have
         try:
-            b = fTestKeep(1, constants.STARTING_DICE_NUMBER+1)
+            fTestKeep(1, constants.STARTING_DICE_NUMBER+1)
             self.fail("Should have asserted")
         except AssertionError, e:
-            self.assertEquals( "Keeping more dice than we have", e.message )
+            self.assertEquals("Keeping more dice than we have", e.message)

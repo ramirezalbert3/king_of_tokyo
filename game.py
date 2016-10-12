@@ -41,30 +41,6 @@ class Game:
                 state.append(iPlayer.lives)
         return state
 
-    def getLegalActions(self, playerID):
-        '''
-        Actions defined in a list of kept dice
-        This is actually only depends on the number of dice
-        Using binary representation to define legal actions
-        Legal action: Do we keep or roll each dice?
-        For 4 dice, 0110 (6) means we keep dice 1 & 2 and roll 0 & 3
-        '''
-        legalActionsList = []
-        numLegalActions = 2 ** len(self.playerList[playerID].playerDice)
-        for i in range(numLegalActions):
-            legalActionsList.append(i)
-        return legalActionsList
-
-    def doWeKeepDice(self, legalAction, diceToKeep, playerID):
-        '''
-        To know if we keep a given dice we shift bites (>>) and & with True
-        For previous example:
-        doWeKeepDice(6, 1): (6 >> 1 & True) = True
-        Where 6 is the legalAction processed and 1 is the dice we might keep
-        '''
-        assert (diceToKeep <= len(self.playerList[playerID].playerDice)), "Keeping more dice than we have"
-        return ((legalAction >> diceToKeep) & True)
-
     def resetGame(self):
         self.nPlayers = 0
         self.playerList = []
