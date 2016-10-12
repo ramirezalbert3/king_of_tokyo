@@ -76,7 +76,8 @@ class TestPlayer(unittest.TestCase):
 
     def testSetDiceWithString(self):
         testedPlayer = Player()
-        testedPlayer.setDiceWithString('a213H1')  # Also 'test' conversion to lower-case
+        # Also 'test' conversion to lower-case
+        testedPlayer.setDiceWithString('a213H1')
         self.assertEqual(testedPlayer.playerDice[0], constants.DiceValues.attack)
         self.assertEqual(testedPlayer.playerDice[1], constants.DiceValues.two)
         self.assertEqual(testedPlayer.playerDice[2], constants.DiceValues.one)
@@ -86,17 +87,17 @@ class TestPlayer(unittest.TestCase):
         self.assertFalse(testedPlayer.playerDice[5] == constants.DiceValues.two)
         # Assertion for wrong length inputs
         try:
-            b = testedPlayer.setDiceWithString("1")
+            testedPlayer.setDiceWithString("1")
             self.fail("Should have asserted")
         except AssertionError, e:
-            self.assertEquals( "Need right string length for the number of dice", e.message )
+            self.assertEquals("Need right string length for the number of dice", e.message)
 
         # Assertion for wrong character input
         try:
-            b = testedPlayer.setDiceWithString("a213G1")
+            testedPlayer.setDiceWithString("a213G1")
             self.fail("Should have asserted")
         except AssertionError, e:
-            self.assertEquals( "Unknown dice value in diceString", e.message )
+            self.assertEquals("Unknown dice value in diceString", e.message)
 
     def testProcessRoll(self):
         testedPlayer = Player()
@@ -135,7 +136,6 @@ class TestPlayer(unittest.TestCase):
         testedPlayer.addPoints()
         self.assertEqual(testedPlayer.points, 5)
 
-        
     def testGetPlayerDice(self):
         testedPlayer = Player()
         testedPlayer.setDiceWithString("a3a21h")
