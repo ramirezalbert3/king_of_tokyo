@@ -1,4 +1,5 @@
 
+from kingAgent import KingAgent
 from player import Player
 
 """
@@ -29,7 +30,7 @@ class Game:
         pAdded = 0
         while (pAdded < nPlayers):
             pAdded += 1
-            self.playerList.append(Player())
+            self.playerList.append(KingAgent())
 
     def getState(self, playerID):
         state = []
