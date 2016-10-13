@@ -8,7 +8,7 @@ class Game:
     def getReward(self, state):
         '''
         State is defined in a list:
-        Points, Lives, DiceList, OtherPlayers
+        Points, Lives, DiceList, RemainingRolls, OtherPlayers
         '''
         # Process current state
         playerPoints = state[0]
