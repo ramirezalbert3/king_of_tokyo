@@ -32,11 +32,6 @@ class TestDice(unittest.TestCase):
             testedDice.roll()
             self.assertEqual(diceVal, testedDice.currentValue)
 
-    def testGetValue(self):
-        testedDice = Dice()
-        testedDice.currentValue = constants.DiceValues.heal
-        self.assertEqual(testedDice.getValueAsString(), 'heal')
-
 
 class TestPlayer(unittest.TestCase):
 
@@ -99,6 +94,13 @@ class TestPlayer(unittest.TestCase):
         except AssertionError, e:
             self.assertEquals("Unknown dice value in diceString", e.message)
 
+    def testGetDiceAsString(self):
+        testedPlayer = Player()
+        inputDiceList = "a3a21h"
+        testedPlayer.setDiceWithString(inputDiceList)
+        resultDiceList = testedPlayer.getDiceAsString()
+        self.assertEqual(resultDiceList, inputDiceList)
+
     def testProcessRoll(self):
         testedPlayer = Player()
         # Assign dice values
@@ -135,17 +137,3 @@ class TestPlayer(unittest.TestCase):
         testedPlayer.remainingRolls = 0
         testedPlayer.addPoints()
         self.assertEqual(testedPlayer.points, 5)
-
-    def testGetPlayerDice(self):
-        testedPlayer = Player()
-        testedPlayer.setDiceWithString("a3a21h")
-        testedPlayer.remainingRolls = 0
-        resultDiceList = testedPlayer.getPlayerDice()
-        inputDiceList = []
-        inputDiceList.append(constants.DiceValues.attack.name)
-        inputDiceList.append(constants.DiceValues.three.name)
-        inputDiceList.append(constants.DiceValues.attack.name)
-        inputDiceList.append(constants.DiceValues.two.name)
-        inputDiceList.append(constants.DiceValues.one.name)
-        inputDiceList.append(constants.DiceValues.heal.name)
-        self.assertEqual(resultDiceList, inputDiceList)

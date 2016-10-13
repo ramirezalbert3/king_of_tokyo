@@ -31,16 +31,21 @@ class Player:
             else:
                 self.pointsDice[currentDice.currentValue] += 1
 
-    def addPoints(self):
-        if (self.remainingRolls != 0):
-            return
+    def CountPoints(self):
+        pointsToAdd = 0
         for i, roundPoints in enumerate(self.pointsDice):
             # Points if 3 equal dice
             if(roundPoints // constants.MIN_DICE_FOR_POINTS):
                 # Points per 3 equal dice
-                self.points += (i + 1)
+                pointsToAdd += (i + 1)
                 # Points per extra equal dice after that
-                self.points += roundPoints % constants.MIN_DICE_FOR_POINTS
+                pointsToAdd += roundPoints % constants.MIN_DICE_FOR_POINTS
+        return pointsToAdd
+
+    def addPoints(self):
+        if (self.remainingRolls != 0):
+            return
+        self.points += self.CountPoints()
         if(self.points >= constants.MAX_POINTS):
             self.points = constants.MAX_POINTS
             self.playerWon = True
@@ -115,11 +120,22 @@ class Player:
     def didPlayerLose(self):
         return self.playerLost
 
-    def getPlayerDice(self):
-        diceList = []
+    def getDiceAsString(self):
+        diceString = ""
         for currentDice in self.playerDice:
-            diceList.append(currentDice.getValueAsString())
-        return diceList
+            if(currentDice.currentValue == constants.DiceValues.heal):
+                diceString += 'h'
+            elif(currentDice.currentValue == constants.DiceValues.attack):
+                diceString += 'a'
+            elif(currentDice.currentValue == constants.DiceValues.one):
+                diceString += '1'
+            elif(currentDice.currentValue == constants.DiceValues.two):
+                diceString += '2'
+            elif(currentDice.currentValue == constants.DiceValues.three):
+                diceString += '3'
+            else:
+                assert (False), "Unknown dice value"  # pragma: no cover
+        return diceString
 
     def printPlayerStatus(self):  # pragma: no cover
         # print 'Player', self.ID

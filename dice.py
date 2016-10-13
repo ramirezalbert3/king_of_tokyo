@@ -27,8 +27,3 @@ class Dice:
             return True
         else:
             return False
-
-    def getValueAsString(self):
-        for valString in constants.DiceValues:
-            if (self.currentValue == valString):
-                return valString.name
