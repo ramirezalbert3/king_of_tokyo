@@ -23,6 +23,7 @@ class Player:
 
 # Play methods
     def processRoll(self):
+        self.resetDiceCount()
         for currentDice in self.playerDice:
             if(currentDice.currentValue == constants.DiceValues.attack):
                 self.attackDice += 1
@@ -70,7 +71,6 @@ class Player:
             # Add points, heal and ?attack?
             self.healDamage(self.healDice)
             self.addPoints()
-            self.remainingRolls = constants.ROLLS_PER_TURN
             self.myTurn = False
 
 # Setters
@@ -88,6 +88,7 @@ class Player:
 
     def setPlayerTurn(self):
         self.resetAllDice()
+        self.remainingRolls = constants.ROLLS_PER_TURN
         self.myTurn = True
 
     def setDiceWithString(self, diceString):
@@ -148,15 +149,17 @@ class Player:
         print 'Point [1,2,3] dice:', self.pointsDice
 
 # Resetters
-    def resetAllDice(self):
-        for currentDice in self.playerDice:
-            currentDice.reset()
+    def resetDiceCount(self):
         self.attackDice = 0
         self.healDice = 0
         self.pointsDice = [0, 0, 0]
-        self.remainingRolls = constants.ROLLS_PER_TURN
 
-    def resetPlayer(self):
+    def resetAllDice(self):
+        for currentDice in self.playerDice:
+            currentDice.reset()
+        self.resetDiceCount()
+
+    def resetPlayer(self):  # pragma: no cover
         self.resetAllDice()
         self.lives = constants.MAX_LIVES
         self.points = 0

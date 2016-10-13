@@ -79,6 +79,8 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(testedPlayer.playerDice[3], constants.DiceValues.three)
         self.assertEqual(testedPlayer.playerDice[4], constants.DiceValues.heal)
         self.assertEqual(testedPlayer.playerDice[5], constants.DiceValues.one)
+        # Test __eq__ overdrive
+        self.assertTrue(testedPlayer.playerDice[5] == constants.DiceValues.one)
         self.assertFalse(testedPlayer.playerDice[5] == constants.DiceValues.two)
         # Assertion for wrong length inputs
         try:
@@ -101,39 +103,59 @@ class TestPlayer(unittest.TestCase):
         resultDiceList = testedPlayer.getDiceAsString()
         self.assertEqual(resultDiceList, inputDiceList)
 
+    def testCountPoints(self):
+        testedPlayer = Player()
+        # Test cases
+        diceCase1 = [0, 0, 3]
+        diceCase2 = [0, 4, 0]
+        diceCase3 = [1, 2, 2]
+        inputPointDiceList = [diceCase1, diceCase2, diceCase3]
+        expectedResult = [3, 3, 0]
+        # Test process
+        for i in range(len(expectedResult)):
+            testedPlayer.pointsDice = inputPointDiceList[i]
+            resultPoints = testedPlayer.CountPoints()
+            self.assertEqual(expectedResult[i], resultPoints)
+
+    def testAddPoints(self):
+        # Modified/extended testCountPoints (dependency)
+        testedPlayer = Player()
+        # Test cases
+        diceCase1 = [2, 2, 1]
+        diceCase2 = [5, 1, 0]
+        diceCase3 = [0, 2, 4]
+        inputPointDiceList = [diceCase1, diceCase2, diceCase3]
+        initialPoints = 14
+        testedPlayer.points = initialPoints
+        expectedResult = [14, 17, 20]
+        # Test return on remaining rolls
+        testedPlayer.pointsDice = [0, 2, 4]  # Should add points if no return
+        testedPlayer.addPoints()
+        self.assertEqual(testedPlayer.points, initialPoints)
+        # Rest of the test
+        testedPlayer.remainingRolls = 0
+        for i in range(len(expectedResult)):
+            testedPlayer.pointsDice = inputPointDiceList[i]
+            testedPlayer.addPoints()
+            self.assertEqual(expectedResult[i], testedPlayer.points)
+
     def testProcessRoll(self):
         testedPlayer = Player()
-        # Assign dice values
-        testedPlayer.setDiceWithString("a3a21h")
-        testedPlayer.remainingRolls = 0
-        # Process play
-        testedPlayer.processRoll()
-        testedPlayer.addPoints()
-        # Assert
-        self.assertEqual(testedPlayer.attack(), 2)
-        self.assertEqual(testedPlayer.healDice, 1)
-        self.assertEqual(testedPlayer.points, 0)
-        testedPlayer.resetPlayer()
-        # Assign dice values
-        testedPlayer.setDiceWithString("232232")
-        testedPlayer.remainingRolls = 0
-        # Process roll
-        testedPlayer.processRoll()
-        testedPlayer.addPoints()
-        # Assert
-        self.assertEqual(testedPlayer.attack(), 0)
-        self.assertEqual(testedPlayer.healDice, 0)
-        self.assertEqual(testedPlayer.points, 3)
-        testedPlayer.resetPlayer()
-        # Assign dice values
-        testedPlayer.setDiceWithString("332232")
-        # Process play
-        testedPlayer.processRoll()
-        testedPlayer.addPoints()
-        # Assert
-        self.assertEqual(testedPlayer.attack(), 0)
-        self.assertEqual(testedPlayer.healDice, 0)
-        self.assertEqual(testedPlayer.points, 0)
-        testedPlayer.remainingRolls = 0
-        testedPlayer.addPoints()
-        self.assertEqual(testedPlayer.points, 5)
+        # Test cases
+        diceCase1 = "a3a21h"
+        diceCase2 = "232232"
+        diceCase3 = "332232"
+        inputPointDiceList = [diceCase1, diceCase2, diceCase3]
+        diceResult1 = [1, 1, 1]
+        diceResult2 = [0, 4, 2]
+        diceResult3 = [0, 3, 3]
+        expectedPoints = [diceResult1, diceResult2, diceResult3]
+        expectedAttack = [2, 0, 0]
+        expectedHeal = [1, 0, 0]
+        # Test procedure
+        for i in range(len(expectedPoints)):
+            testedPlayer.setDiceWithString(inputPointDiceList[i])
+            testedPlayer.processRoll()
+            self.assertEqual(expectedPoints[i], testedPlayer.pointsDice)
+            self.assertEqual(expectedAttack[i], testedPlayer.attack())
+            self.assertEqual(expectedHeal[i], testedPlayer.healDice)
