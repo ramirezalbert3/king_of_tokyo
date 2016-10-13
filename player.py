@@ -22,7 +22,7 @@ class Player:
         self.pointsDice = [0, 0, 0]
 
 # Play methods
-    def processRoll(self):
+    def processDice(self):
         self.resetDiceCount()
         for currentDice in self.playerDice:
             if(currentDice.currentValue == constants.DiceValues.attack):
@@ -32,7 +32,7 @@ class Player:
             else:
                 self.pointsDice[currentDice.currentValue] += 1
 
-    def CountPoints(self):
+    def countPoints(self):
         pointsToAdd = 0
         for i, roundPoints in enumerate(self.pointsDice):
             # Points if 3 equal dice
@@ -46,7 +46,7 @@ class Player:
     def addPoints(self):
         if (self.remainingRolls != 0):
             return
-        self.points += self.CountPoints()
+        self.points += self.countPoints()
         if(self.points >= constants.MAX_POINTS):
             self.points = constants.MAX_POINTS
             self.playerWon = True
@@ -66,7 +66,7 @@ class Player:
         if (self.remainingRolls != 0):
             self.roll()
             self.remainingRolls -= 1
-            self.processRoll()
+            self.processDice()
         else:
             # Add points, heal and ?attack?
             self.healDamage(self.healDice)

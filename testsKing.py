@@ -114,7 +114,7 @@ class TestPlayer(unittest.TestCase):
         # Test process
         for i in range(len(expectedResult)):
             testedPlayer.pointsDice = inputPointDiceList[i]
-            resultPoints = testedPlayer.CountPoints()
+            resultPoints = testedPlayer.countPoints()
             self.assertEqual(expectedResult[i], resultPoints)
 
     def testAddPoints(self):
@@ -155,7 +155,7 @@ class TestPlayer(unittest.TestCase):
         # Test procedure
         for i in range(len(expectedPoints)):
             testedPlayer.setDiceWithString(inputPointDiceList[i])
-            testedPlayer.processRoll()
+            testedPlayer.processDice()
             self.assertEqual(expectedPoints[i], testedPlayer.pointsDice)
             self.assertEqual(expectedAttack[i], testedPlayer.attack())
             self.assertEqual(expectedHeal[i], testedPlayer.healDice)

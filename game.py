@@ -19,10 +19,10 @@ class Game:
         if(remainingRolls > 0):
             return reward
 
-        # Using auxiliary player for Player.CountPoints()
+        # Using auxiliary player for Player.countPoints()
         auxPlayer = Player()
         auxPlayer.setDiceWithString(playerDice)
-        auxPlayer.processRoll()
-        pointsGained = auxPlayer.CountPoints()
+        auxPlayer.processDice()
+        pointsGained = auxPlayer.countPoints()
         reward += playerPoints + pointsGained
         return reward
