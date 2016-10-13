@@ -7,8 +7,6 @@ Also check: http://artint.info/html/ArtInt_227.html
 """
 
 
-# Maybe this class should NOT be game specific
-# Does it need to inherit? Maybe only Class Game needs to know about Player
 class Agent():
     def __init__(self, alpha, epsilon, gamma):
         self.epsilon = epsilon  # (exploration prob)

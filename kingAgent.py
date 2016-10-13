@@ -2,6 +2,7 @@ from agent import Agent
 from player import Player
 
 
+# For now we'll define an agent that plays alone
 class KingAgent(Agent, Player):
     def __init__(self, alpha=1.0, epsilon=0.05, gamma=0.8):
         Player.__init__(self)
@@ -33,3 +34,12 @@ class KingAgent(Agent, Player):
         '''
         assert (diceToKeep <= len(self.playerDice)), "Keeping more dice than we have"
         return ((legalAction >> diceToKeep) & True)
+
+    def getState(self):
+        state = []
+        state.append(self.points)
+        state.append(self.lives)
+        state.append(self.getPlayerDice())
+        state.append(self.remainingRolls)
+        # Append otherPlayer lives & points in lists, even if only 1
+        return state

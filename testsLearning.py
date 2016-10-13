@@ -6,23 +6,36 @@ from kingAgent import KingAgent
 
 class TestGame(unittest.TestCase):
 
-    def testGetState(self):
+    def testGetReward(self):
         testedGame = Game()
-        for i in range(1, 5):
-            nPlayers = i
-            testedGame.resetGame()
-            testedGame = Game(nPlayers)
-            # State listed: player points, lives, dice, other players lives
-            initialState = []
-            initialState.append(0)
-            initialState.append(constants.MAX_LIVES)
-            # getPlayerDice() should already be tested somewhere else
-            initialState.append(testedGame.playerList[0].getPlayerDice())
-            pProcessed = 1
-            while(pProcessed < nPlayers):
-                initialState.append(constants.MAX_LIVES)
-                pProcessed += 1
-            self.assertEqual(testedGame.getState(0), initialState)
+        # Multiple cases
+        # 1. No reward due to remaining rolls
+        startingPoints = 3
+        remainingRolls = 2
+        playerDice = "a123ha"
+        expectedReward = 0
+        # Create state and check reward
+        state = [startingPoints, playerDice, remainingRolls]
+        reward = testedGame.getReward(state)
+        self.assertEqual(reward, expectedReward)
+        # 2. Added reward due to dice
+        startingPoints = 0
+        remainingRolls = 0
+        playerDice = "a12333"
+        expectedReward = 3
+        # Create state and check reward
+        state = [startingPoints, playerDice, remainingRolls]
+        reward = testedGame.getReward(state)
+        self.assertEqual(reward, expectedReward)
+        # 3. Reward equal to initial points
+        startingPoints = 17
+        remainingRolls = 0
+        playerDice = "a123h3"
+        expectedReward = 17
+        # Create state and check reward
+        state = [startingPoints, playerDice, remainingRolls]
+        reward = testedGame.getReward(state)
+        self.assertEqual(reward, expectedReward)
 
 
 class TestKingAgent(unittest.TestCase):
