@@ -179,5 +179,5 @@ class TestKingAgent(unittest.TestCase):
         base = (1-epsilon) * nTests
         greaterThan = base - nTests / 20
         LessThan = base + nTests / 20
-        self.assertGreater(resPolicy, greaterThan)
-        self.assertLess(resPolicy, LessThan)
+        self.assertGreaterEqual(resPolicy, greaterThan)
+        self.assertLessEqual(resPolicy, LessThan)
