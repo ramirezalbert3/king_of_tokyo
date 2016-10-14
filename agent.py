@@ -18,8 +18,8 @@ class Agent():
         self.V = Counter()
         self.Q = Counter()
         self.Policy = Counter()
-        # Used to keep track of visited states
-        # Limitation -> Policy[state] = 0 might be a valid action
+        # Used to keep track of visited states because:
+        # Policy[state] = 0 might be a valid action
         self.states = Counter()
 
     # Compute the action to take in the current state
@@ -48,9 +48,13 @@ class Agent():
 
     # state = action => nextState and reward transition
     # Q-Value, visits counter, Value and Policy update here
-    def update(self, state, action, reward):
+    def update(self, state, action, reward, nextState):
         self.states[state] += 1  # Increase visits counter
-        self.Q[state, action] += reward + self.gamma * self.V(state)
+        prevQ = self.Q[state, action]
+        # Reward for ending in next state + expected reward from then on
+        increaseQ = reward + self.gamma*self.value[nextState]
+        # For alpha=0 no learning, for =1 no remembering
+        self.Q[state, action] += self.alpha * (increaseQ - prevQ)
         if (self.Q[state, action] > self.V[state]):
             self.V[state] = self.Q[state, action]
             self.Policy[state] = action
