@@ -6,7 +6,7 @@ import random
 
 # For now we'll define an agent that plays alone
 class KingAgent(Agent, Player):
-    def __init__(self, alpha=1.0, epsilon=0.05, gamma=0.8):
+    def __init__(self, alpha=1.0, epsilon=0.1, gamma=0.8):
         Player.__init__(self)
         Agent.__init__(self, alpha, epsilon, gamma)
 
@@ -33,7 +33,6 @@ class KingAgent(Agent, Player):
         action = self.getPolicy(state)
         if (action is None or flipCoin(self.epsilon)):
             action = random.choice(legalActions)
-
         return action
 
     def doWeKeepDice(self, legalAction, diceToKeep):
@@ -50,8 +49,8 @@ class KingAgent(Agent, Player):
         state = []
         state.append(self.points)
         state.append(self.lives)
-        state.append(self.getPlayerDice())
+        state.append(self.getDiceAsString())
         state.append(self.remainingRolls)
         stateTuple = tuple(state)
-        # Append otherPlayer lives & points in lists, even if only 1
+        # TODO: Append otherPlayer lives & points in lists, even if only 1
         return stateTuple

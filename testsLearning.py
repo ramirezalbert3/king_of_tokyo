@@ -3,6 +3,7 @@ import constants
 from game import Game
 from agent import Agent
 from kingAgent import KingAgent
+from collections import Counter
 
 
 class TestGame(unittest.TestCase):
@@ -150,3 +151,33 @@ class TestKingAgent(unittest.TestCase):
             self.fail("Should have asserted")
         except AssertionError, e:
             self.assertEquals("Keeping more dice than we have", e.message)
+
+    def testGetState(self):
+        # It's important we can use the state to index a Counter
+        auxCounter = Counter()
+        testedAgent = KingAgent()
+        state = testedAgent.getState()
+        self.assertEqual(auxCounter[state], 0)
+        auxCounter[state] = 1
+        self.assertEqual(auxCounter[state], 1)
+
+    def testGetAction(self):
+        alpha = 0.7
+        epsilon = 0.2
+        gamma = 0.8
+        testedAgent = KingAgent(alpha, epsilon, gamma)
+        nTests = 100
+        count = Counter()
+        state = testedAgent.getState()
+        expectedPolicy = 1
+        testedAgent.Policy[state] = expectedPolicy
+        testedAgent.states[state] = 2
+        for i in range(nTests):
+            resAction = testedAgent.getAction(state)
+            count[resAction] += 1
+        resPolicy = count[expectedPolicy]
+        base = (1-epsilon) * nTests
+        greaterThan = base - nTests / 20
+        LessThan = base + nTests / 20
+        self.assertGreater(resPolicy, greaterThan)
+        self.assertLess(resPolicy, LessThan)
