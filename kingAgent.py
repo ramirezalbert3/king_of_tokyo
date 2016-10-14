@@ -29,7 +29,7 @@ class KingAgent(Agent, Player):
 
     def getAction(self, state):
         # Pick Action
-        legalActions = self.getLegalActions(state)
+        legalActions = self.getLegalActions()
         action = self.getPolicy(state)
         if (action is None or flipCoin(self.epsilon)):
             action = random.choice(legalActions)

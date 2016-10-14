@@ -25,10 +25,10 @@ class Agent():
     # Compute the action to take in the current state
     # With probability self.epsilon we should take a random action
     # and take the best policy action otherwise
-    def getAction(self, state):
+    def getAction(self, state):  # pragma: no cover
         pass
 
-    def getLegalActions(self):
+    def getLegalActions(self):  # pragma: no cover
         pass
 
     # Return Q-value for a given pair "state & action"
@@ -37,7 +37,7 @@ class Agent():
 
     # Returns max_action Q(state,action) over legal actions
     def getValue(self, state):
-        return self.value[state]
+        return self.V[state]
 
     # Return the best action to take in a state or None
     def getPolicy(self, state):
@@ -52,7 +52,7 @@ class Agent():
         self.states[state] += 1  # Increase visits counter
         prevQ = self.Q[state, action]
         # Reward for ending in next state + expected reward from then on
-        increaseQ = reward + self.gamma*self.value[nextState]
+        increaseQ = reward + self.gamma*self.V[nextState]
         # For alpha=0 no learning, for =1 no remembering
         self.Q[state, action] += self.alpha * (increaseQ - prevQ)
         if (self.Q[state, action] > self.V[state]):
