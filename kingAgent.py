@@ -52,5 +52,6 @@ class KingAgent(Agent, Player):
         state.append(self.lives)
         state.append(self.getPlayerDice())
         state.append(self.remainingRolls)
+        stateTuple = tuple(state)
         # Append otherPlayer lives & points in lists, even if only 1
-        return state
+        return stateTuple
