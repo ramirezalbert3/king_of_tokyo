@@ -1,9 +1,15 @@
 from player import Player
+from kingAgent import KingAgent
 
 
 class Game:
     def __init__(self):
+        self.trainingAgent = KingAgent()
         pass
+
+# Flow control functions
+    def setInitialState(self):
+        self.trainingAgent.resetPlayer()
 
     def getReward(self, state):
         '''

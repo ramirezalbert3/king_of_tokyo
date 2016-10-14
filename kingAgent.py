@@ -1,5 +1,7 @@
 from agent import Agent
 from player import Player
+from utils import flipCoin
+import random
 
 
 # For now we'll define an agent that plays alone
@@ -24,6 +26,15 @@ class KingAgent(Agent, Player):
         for i in range(numLegalActions):
             legalActionsList.append(i)
         return legalActionsList
+
+    def getAction(self, state):
+        # Pick Action
+        legalActions = self.getLegalActions(state)
+        action = self.getPolicy(state)
+        if (action is None or flipCoin(self.epsilon)):
+            action = random.choice(legalActions)
+
+        return action
 
     def doWeKeepDice(self, legalAction, diceToKeep):
         '''

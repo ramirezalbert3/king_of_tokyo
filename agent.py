@@ -1,3 +1,4 @@
+from collections import Counter
 """
 Useful definitions:
 V(s) = max_{a in actions} Q(s,a)
@@ -12,18 +13,14 @@ class Agent():
         self.epsilon = epsilon  # (exploration prob)
         self.alpha = alpha  # (learning rate)
         self.gamma = gamma  # (discount rate)
-        self.states = []
-        self.V = []
-        self.Q = []
-        self.Policy = []
-
-    # Return Q-value for a given pair "state & action"
-    def getQValue(self, state, action):
-        pass
-
-    # Returns max_action Q(state,action) over legal actions
-    def getValue(self, state):
-        pass
+        # Counters are like dictionaries that default to zero
+        # Counter[KeyNotIndexedYet] = 0 instead of error
+        self.V = Counter()
+        self.Q = Counter()
+        self.Policy = Counter()
+        # Used to keep track of visited states
+        # Limitation -> Policy[state] = 0 might be a valid action
+        self.states = Counter()
 
     # Compute the action to take in the current state
     # With probability self.epsilon we should take a random action
@@ -31,14 +28,29 @@ class Agent():
     def getAction(self, state):
         pass
 
-    # Return the best action to take in a state or None
-    def getPolicy(self, state):
-        pass
-
-    # state = action => nextState and reward transition
-    # Q-Value update here
-    def update(self):
-        pass
-
     def getLegalActions(self):
         pass
+
+    # Return Q-value for a given pair "state & action"
+    def getQValue(self, state, action):
+        return self.Q[state, action]
+
+    # Returns max_action Q(state,action) over legal actions
+    def getValue(self, state):
+        return self.value[state]
+
+    # Return the best action to take in a state or None
+    def getPolicy(self, state):
+        if (self.states[state] > 0):
+            return self.Policy[state]
+        else:
+            return None
+
+    # state = action => nextState and reward transition
+    # Q-Value, visits counter, Value and Policy update here
+    def update(self, state, action, reward):
+        self.states[state] += 1  # Increase visits counter
+        self.Q[state, action] += reward + self.gamma * self.V(state)
+        if (self.Q[state, action] > self.V[state]):
+            self.V[state] = self.Q[state, action]
+            self.Policy[state] = action
