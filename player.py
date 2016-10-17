@@ -53,25 +53,23 @@ class Player:
             self.myTurn = False
 
     def roll(self):
-        self.attackDice = 0
-        self.healDice = 0
-        self.pointsDice = [0, 0, 0]
-        for currentDice in self.playerDice:
-            if(not currentDice.kept):
-                currentDice.roll()
+        if (self.remainingRolls != 0):
+            self.resetDiceCount()
+            for currentDice in self.playerDice:
+                if(not currentDice.kept):
+                    currentDice.roll()
+            self.remainingRolls -= 1
 
     def play(self):
-        if (not self.myTurn or self.playerWon or self.playerLost):
+        if (not self.myTurn or self.playerWon or self.playerLost or self.remainingRolls == 0):
             return
-        if (self.remainingRolls != 0):
-            self.roll()
-            self.remainingRolls -= 1
-            self.processDice()
         else:
-            # Add points, heal and ?attack?
+            self.roll()
+            self.processDice()
             self.healDamage(self.healDice)
             self.addPoints()
-            self.myTurn = False
+            if (self.remainingRolls == 0):
+                self.myTurn = False
 
 # Setters
     def takeDamage(self, damagePoints):
@@ -82,6 +80,8 @@ class Player:
             self.playerLost = True
 
     def healDamage(self, healAmmount):
+        if (self.remainingRolls != 0):
+            return
         self.lives += healAmmount
         if (self.lives > constants.MAX_LIVES):
             self.lives = constants.MAX_LIVES

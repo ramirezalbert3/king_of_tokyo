@@ -1,44 +1,8 @@
 import unittest
 import constants
-from game import Game
 from agent import Agent
 from kingAgent import KingAgent
 from collections import Counter
-
-
-class TestGame(unittest.TestCase):
-
-    def testGetReward(self):
-        testedGame = Game()
-        # Multiple cases
-        stateList = []
-        rewardList = []
-        # 1. No reward due to remaining rolls
-        startingPoints = 3
-        remainingRolls = 2
-        playerDice = "a123ha"
-        expectedReward = 0
-        stateList.append([startingPoints, playerDice, remainingRolls])
-        rewardList.append(expectedReward)
-        # 2. Added reward due to dice
-        startingPoints = 0
-        remainingRolls = 0
-        playerDice = "a12333"
-        expectedReward = 3
-        stateList.append([startingPoints, playerDice, remainingRolls])
-        rewardList.append(expectedReward)
-        # 3. Reward equal to initial points
-        startingPoints = 17
-        remainingRolls = 0
-        playerDice = "a123h3"
-        expectedReward = 17
-        stateList.append([startingPoints, playerDice, remainingRolls])
-        rewardList.append(expectedReward)
-
-        # Test run
-        for i in range(len(stateList)):
-            reward = testedGame.getReward(stateList[i])
-            self.assertEqual(reward, rewardList[i])
 
 
 class testAgent(unittest.TestCase):
@@ -181,3 +145,28 @@ class TestKingAgent(unittest.TestCase):
         LessThan = base + nTests / 20
         self.assertGreaterEqual(resPolicy, greaterThan)
         self.assertLessEqual(resPolicy, LessThan)
+
+    def testGetReward(self):
+        testedAgent = KingAgent()
+        # Multiple cases
+        stateList = []
+        rewardList = []
+        # 1. No reward due to remaining rolls
+        startingPoints = 3
+        remainingRolls = 2
+        playerDice = "test"
+        expectedReward = 0
+        stateList.append([startingPoints, playerDice, remainingRolls])
+        rewardList.append(expectedReward)
+        # 2. Reward expected
+        startingPoints = 3
+        remainingRolls = 0
+        playerDice = "test"
+        expectedReward = 3
+        stateList.append([startingPoints, playerDice, remainingRolls])
+        rewardList.append(expectedReward)
+
+        # Test run
+        for i in range(len(stateList)):
+            reward = testedAgent.getReward(stateList[i])
+            self.assertEqual(reward, rewardList[i])

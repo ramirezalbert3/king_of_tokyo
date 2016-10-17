@@ -1,39 +1,26 @@
-from player import Player
+from kingAgent import KingAgent
+from game import Game
 
+student = KingAgent(0.9, 0.1, 0.8)
 
-def GameOver(pList):
-    gameOver = False
-    for p in pList:
-        if(p.didPlayerWin()):
-            print 'Player', p.ID, 'won :)'
-            break
-        elif(p.didPlayerLose()):
-            print 'Player', p.ID, 'lost :('
-            break
-    gameOver = p.didPlayerWin() or p.didPlayerLose()
-    return gameOver
-
-pList = []
-for i in range(2):
-    pList.append(Player())
-
+#Training vars
 playing = True
+cycles = 0
+cycleLim = 1000
+count = 0
 
-while(playing):
-    for i, p in enumerate(pList):
-        p.setPlayerTurn()
-        print 'Player', i+1, 'turn'
-        # print '-----Before rolling dice-----'
-        p.printPlayerStatus()
-        while(p.isItPlayerTurn()):
-            p.play()
-        # print '-----After rolling dice------'
-        # p.printPlayerStatus()
-        # p.printPlayerDice()
-        for j, otherPlayer in enumerate(pList):
-            if (i != j):
-                otherPlayer.takeDamage(p.attack())
-        print '-----------------------------'
-        playing = not GameOver(pList)
-        if(not playing):
-            break
+while(cycles < cycleLim):
+    cycles += 1
+    while(playing):
+            nextState = student.act()
+            count += 1
+            if(student.remainingRolls == 0):
+                student.setPlayerTurn()
+            playing = not (student.didPlayerWin() or student.didPlayerLose())
+            if(count % 1000 == 0):
+                print 'Cycle:', cycles, 'is taking more than', count, 'movements'
+                print 'Currently got:', student.points, 'points'
+    if(cycles % 100 == 0):
+        print 'Cycle:', cycles, 'took', count, 'movements'
+    student.resetPlayer()
+    count = 0

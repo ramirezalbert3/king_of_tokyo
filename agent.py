@@ -22,33 +22,11 @@ class Agent():
         # Policy[state] = 0 might be a valid action
         self.states = Counter()
 
-    # Compute the action to take in the current state
-    # With probability self.epsilon we should take a random action
-    # and take the best policy action otherwise
-    def getAction(self, state):  # pragma: no cover
-        pass
-
-    def getLegalActions(self):  # pragma: no cover
-        pass
-
-    # Return Q-value for a given pair "state & action"
-    def getQValue(self, state, action):
-        return self.Q[state, action]
-
-    # Returns max_action Q(state,action) over legal actions
-    def getValue(self, state):
-        return self.V[state]
-
-    # Return the best action to take in a state or None
-    def getPolicy(self, state):
-        if (self.states[state] > 0):
-            return self.Policy[state]
-        else:
-            return None
-
-    # state = action => nextState and reward transition
-    # Q-Value, visits counter, Value and Policy update here
     def update(self, state, action, reward, nextState):
+        '''
+        state = action => nextState and reward transition
+        Q-Value, visits counter, Value and Policy update here
+        '''
         self.states[state] += 1  # Increase visits counter
         prevQ = self.Q[state, action]
         # Reward for ending in next state + expected reward from then on
@@ -58,3 +36,52 @@ class Agent():
         if (self.Q[state, action] > self.V[state]):
             self.V[state] = self.Q[state, action]
             self.Policy[state] = action
+
+    def act(self, state):  # pragma: no cover
+        '''
+        Perform an action and call update
+        '''
+        pass
+
+    def getReward(self, state):
+        '''
+        State is defined in a list:
+        Points, Lives, DiceList, RemainingRolls, OtherPlayers
+        '''
+
+    def getAction(self, state):  # pragma: no cover
+        '''
+        Compute the action to take in the current state
+        With probability self.epsilon we should take a random action
+        and take the best policy action otherwise
+        '''
+        pass
+
+    def getLegalActions(self):  # pragma: no cover
+        '''
+        Compute the action to take in the current state
+        With probability self.epsilon we should take a random action
+        and take the best policy action otherwise
+        '''
+        pass
+
+    def getQValue(self, state, action):
+        '''
+        Return Q-value for a given pair "state & action"
+        '''
+        return self.Q[state, action]
+
+    def getValue(self, state):
+        '''
+        Returns max_action Q(state,action) over legal actions
+        '''
+        return self.V[state]
+
+    def getPolicy(self, state):
+        '''
+        Return the best action to take in a state or None
+        '''
+        if (self.states[state] > 0):
+            return self.Policy[state]
+        else:
+            return None
