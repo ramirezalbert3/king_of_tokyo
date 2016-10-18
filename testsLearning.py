@@ -131,7 +131,6 @@ class TestKingAgent(unittest.TestCase):
         inputState = (startingPoints, playerDice, remainingRolls)
         self.assertEqual(inputState, testedAgent.getState())
 
-
     def testGetAction(self):
         alpha = 0.7
         epsilon = 0.2
