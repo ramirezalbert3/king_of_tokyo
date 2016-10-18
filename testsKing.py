@@ -107,10 +107,10 @@ class TestPlayer(unittest.TestCase):
         testedPlayer = Player()
         # Test cases
         diceCase1 = [0, 0, 3]
-        diceCase2 = [0, 4, 0]
+        diceCase2 = [0, 6, 0]
         diceCase3 = [1, 2, 2]
         inputPointDiceList = [diceCase1, diceCase2, diceCase3]
-        expectedResult = [3, 3, 0]
+        expectedResult = [3, 5, 0]
         # Test process
         for i in range(len(expectedResult)):
             testedPlayer.pointsDice = inputPointDiceList[i]

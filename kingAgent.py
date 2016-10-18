@@ -6,11 +6,11 @@ import random
 
 # For now we'll define an agent that plays alone
 class KingAgent(Agent, Player):
-    def __init__(self, alpha=1.0, epsilon=0.1, gamma=0.8):
+    def __init__(self, alpha=0.9, epsilon=0.1, gamma=0.8):
         Player.__init__(self)
         Agent.__init__(self, alpha, epsilon, gamma)
 
-    def act(self):  # pragma: no cover
+    def act(self):
         state = self.getState()
         action = self.getAction(state)
         self.keepDice(state, action)

@@ -35,12 +35,12 @@ class Player:
     def countPoints(self):
         pointsToAdd = 0
         for i, roundPoints in enumerate(self.pointsDice):
-            # Points if 3 equal dice
+            # Points if min 3 equal dice
             if(roundPoints // constants.MIN_DICE_FOR_POINTS):
                 # Points per 3 equal dice
                 pointsToAdd += (i + 1)
                 # Points per extra equal dice after that
-                pointsToAdd += roundPoints % constants.MIN_DICE_FOR_POINTS
+                pointsToAdd += (roundPoints - constants.MIN_DICE_FOR_POINTS)
         return pointsToAdd
 
     def addPoints(self):

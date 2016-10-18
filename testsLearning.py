@@ -73,6 +73,23 @@ class testAgent(unittest.TestCase):
 
 
 class TestKingAgent(unittest.TestCase):
+
+    def testAct(self):
+        testedAgent = KingAgent(1, 0, 1)  # Full learning, no exploration
+        expectedReward = 6
+        testedAgent.setPlayerTurn()
+        testedAgent.setDiceWithString('333333')
+        testedAgent.remainingRolls = 1
+        initState = testedAgent.getState()
+        policy = 63  # Keep all dice
+        testedAgent.states[initState] = 1
+        testedAgent.Policy[initState] = policy
+        testedAgent.act()
+        self.assertEqual(testedAgent.states[initState], 2)
+        self.assertEqual(testedAgent.Q[initState, policy], expectedReward)
+        self.assertEqual(testedAgent.V[initState], expectedReward)
+        self.assertEqual(testedAgent.Policy[initState], policy)
+
     def testGetLegalActions(self):
         testedAgent = KingAgent()
         listedActions = []
@@ -147,8 +164,8 @@ class TestKingAgent(unittest.TestCase):
             count[resAction] += 1
         resPolicy = count[expectedPolicy]
         base = (1-epsilon) * nTests
-        greaterThan = base - nTests / 20
-        LessThan = base + nTests / 20
+        greaterThan = base - nTests / 10
+        LessThan = base + nTests / 10
         self.assertGreaterEqual(resPolicy, greaterThan)
         self.assertLessEqual(resPolicy, LessThan)
 
