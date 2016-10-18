@@ -43,11 +43,12 @@ class Agent():
         '''
         pass
 
-    def getReward(self, state):
+    def getReward(self, state):  # pragma: no cover
         '''
         State is defined in a list:
         Points, Lives, DiceList, RemainingRolls, OtherPlayers
         '''
+        pass
 
     def getAction(self, state):  # pragma: no cover
         '''

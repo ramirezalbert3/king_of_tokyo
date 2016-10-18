@@ -9,9 +9,12 @@ playing = True
 cycles = 0
 cycleLim = 2500
 count = 0
+
+# Output to file
 text_file = open("Output.txt", "w")
 outputString ="%s %s %s\n" % ("Cycles", "Movements_cycle", "Visited_states")
 text_file.write(outputString)
+
 while(cycles < cycleLim):
     cycles += 1
     student.resetPlayer()
@@ -27,7 +30,7 @@ while(cycles < cycleLim):
     if(cycles % (cycleLim / 10) == 0):
         print 'Cycle:', cycles, 'took', count, 'movements'
         print 'States visited', len(student.states)
-    if(cycles % (cycleLim / 100) == 0):
+    if(cycles % (cycleLim / 250) == 0):
         outputString ="%d %d %d\n" % (cycles, count, len(student.states))
         text_file.write(outputString)
     count = 0
