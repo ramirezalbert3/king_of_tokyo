@@ -10,7 +10,7 @@ class KingAgent(Agent, Player):
         Player.__init__(self)
         Agent.__init__(self, alpha, epsilon, gamma)
 
-    def act(self):
+    def act(self):  # pragma: no cover
         state = self.getState()
         action = self.getAction(state)
         self.keepDice(state, action)
@@ -21,10 +21,8 @@ class KingAgent(Agent, Player):
 
     def getReward(self, state):
         '''
-        State is defined in a list:
-        Points, Lives, DiceList, RemainingRolls, OtherPlayers
+        Reward for getting to a given state
         '''
-        # Process current state
         playerPoints = state[0]
         remainingRolls = state[2]
 
@@ -36,6 +34,10 @@ class KingAgent(Agent, Player):
         return reward
 
     def getState(self):
+        '''
+        State is defined in a list:
+        Points, Lives, DiceList, RemainingRolls, OtherPlayers
+        '''
         state = []
         state.append(self.points)
         # state.append(self.lives)
@@ -48,10 +50,7 @@ class KingAgent(Agent, Player):
     def getLegalActions(self):
         '''
         Actions defined in a list of kept dice
-        In this game, state independent
-        This is actually only depends on the number of dice
-        Using binary representation to define legal actions
-        Legal action: Do we keep or roll each dice?
+        In this game only depends on the number of dice
         For 4 dice, 0110 (6) means we keep dice 1 & 2 and roll 0 & 3
         '''
         legalActionsList = []
@@ -61,7 +60,10 @@ class KingAgent(Agent, Player):
         return legalActionsList
 
     def getAction(self, state):
-        # Pick Action
+        '''
+        Pick either the policy for a state
+        or a random legal action based on self.epsilon
+        '''
         legalActions = self.getLegalActions()
         action = self.getPolicy(state)
         if (action is None or flipCoin(self.epsilon)):

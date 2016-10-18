@@ -177,3 +177,17 @@ class TestKingAgent(unittest.TestCase):
         for i in range(len(stateList)):
             reward = testedAgent.getReward(stateList[i])
             self.assertEqual(reward, rewardList[i])
+
+    def testKeepDice(self):
+        testedAgent = KingAgent()
+        testedAgent.roll()
+        state = testedAgent.getState()
+        action = 20  # Dice kept as follows 010 100
+        keptDice1 = testedAgent.playerDice[2].currentValue
+        keptDice2 = testedAgent.playerDice[4].currentValue
+        testedAgent.keepDice(state, action)
+        testedAgent.roll()
+        resDice1 = testedAgent.playerDice[2].currentValue
+        resDice2 = testedAgent.playerDice[4].currentValue
+        self.assertEqual(keptDice1, resDice1)
+        self.assertEqual(keptDice2, resDice2)
