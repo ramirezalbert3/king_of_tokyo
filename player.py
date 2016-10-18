@@ -50,11 +50,9 @@ class Player:
         if(self.points >= constants.MAX_POINTS):
             self.points = constants.MAX_POINTS
             self.playerWon = True
-            self.myTurn = False
 
     def roll(self):
         if (self.remainingRolls != 0):
-            self.resetDiceCount()
             for currentDice in self.playerDice:
                 if(not currentDice.kept):
                     currentDice.roll()

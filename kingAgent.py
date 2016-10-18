@@ -38,7 +38,7 @@ class KingAgent(Agent, Player):
     def getState(self):
         state = []
         state.append(self.points)
-        state.append(self.lives)
+        # state.append(self.lives)
         state.append(self.getDiceAsString())
         state.append(self.remainingRolls)
         stateTuple = tuple(state)

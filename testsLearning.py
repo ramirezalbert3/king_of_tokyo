@@ -124,6 +124,13 @@ class TestKingAgent(unittest.TestCase):
         self.assertEqual(auxCounter[state], 0)
         auxCounter[state] = 1
         self.assertEqual(auxCounter[state], 1)
+        # Check the state format
+        startingPoints = 0
+        remainingRolls = constants.ROLLS_PER_TURN
+        playerDice = "111111"
+        inputState = (startingPoints, playerDice, remainingRolls)
+        self.assertEqual(inputState, testedAgent.getState())
+
 
     def testGetAction(self):
         alpha = 0.7
