@@ -3,7 +3,7 @@ from stager import Stager
 
 
 student = KingAgent(0.7, 0.1, 0.8)
-stager = Stager(2500, 10, 'Output.txt')
+stager = Stager(2500, 10, 'Output.txt', 250)
 
 
 # Training vars
