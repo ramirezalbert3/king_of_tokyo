@@ -1,3 +1,4 @@
 *.pyc
 .coverage
 Output.txt
+results.ods
