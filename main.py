@@ -3,7 +3,7 @@ from utils import Stager
 
 
 student = KingAgent(0.7, 0.1, 0.8)
-stager = Stager(2500, 10, 'Output.txt', 250)
+stager = Stager(5000, 10, 'Output.txt', 200)
 
 
 # Training vars
@@ -19,4 +19,4 @@ while(stager.areWeCycling()):
             if(student.remainingRolls == 0):
                 student.setPlayerTurn()
             playing = not (student.didPlayerWin() or student.didPlayerLose())
-    stager.updateCycle()
+    stager.updateCycle(student)
