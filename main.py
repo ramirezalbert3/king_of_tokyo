@@ -17,8 +17,9 @@ while(stager.areWeCycling()):
     playerList[0].setPlayerTurn()
     playing = True
     while(playing):
-            nextState = student.act()
-            stager.updateTurn(playerList)
-            for player in playerList:
-                playing = playing and not (player.didPlayerWin() or player.didPlayerLose())
+        for player in playerList:
+            player.act()
+        stager.updateTurn(playerList)
+        for player in playerList:
+            playing = playing and not (player.didPlayerWin() or player.didPlayerLose())
     stager.updateCycle(playerList)

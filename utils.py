@@ -27,6 +27,7 @@ class EpochHandler:
         agent.gamma = 0.8
 
     def stageMonitoring(self, cyclesPassed, playerList):
+        finalStage = self.stage
         for agent in playerList:
             if(cyclesPassed < self.explorationCycles):
                 if(self.stage == 0):
@@ -102,6 +103,7 @@ class Stager:
 
     def updateCycle(self, playerList):
         self.cyclesPassed += 1
+        self.movementCount = self.movementCount / self.turnHandler.numberOfPlayers
         self.cycleStats()
         self.outputToFile()
         self.printStatus()
