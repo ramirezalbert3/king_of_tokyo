@@ -2,21 +2,23 @@ from kingAgent import KingAgent
 from utils import Stager
 
 
-student = KingAgent(0.7, 0.1, 0.8)
-stager = Stager(5000, 10, 'Output.txt', 200)
+student = KingAgent()
+competitor = KingAgent()
+playerList = [student, competitor]
+stager = Stager(15000, 10, 'Output.txt', 200)
 
-
-# Training vars
+stager.epochHandler.stageMonitoring(0, playerList)
+stager.turnHandler.addPlayers(playerList)
 playing = True
-
+playerList[0].setPlayerTurn()
 while(stager.areWeCycling()):
-    student.resetPlayer()
-    student.setPlayerTurn()
+    for player in playerList:
+        player.resetPlayer()
+    playerList[0].setPlayerTurn()
     playing = True
     while(playing):
             nextState = student.act()
-            stager.updateCount()
-            if(student.remainingRolls == 0):
-                student.setPlayerTurn()
-            playing = not (student.didPlayerWin() or student.didPlayerLose())
-    stager.updateCycle(student)
+            stager.updateTurn(playerList)
+            for player in playerList:
+                playing = playing and not (player.didPlayerWin() or player.didPlayerLose())
+    stager.updateCycle(playerList)

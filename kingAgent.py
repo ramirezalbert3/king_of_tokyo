@@ -11,6 +11,8 @@ class KingAgent(Agent, Player):
         Agent.__init__(self, alpha, epsilon, gamma)
 
     def act(self):
+        if(not self.myTurn):
+            return
         state = self.getState()
         action = self.getAction(state)
         self.keepDice(state, action)

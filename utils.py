@@ -1,8 +1,8 @@
 import random
 
 
-class epochHandler:
-    def __init__(self, totalCycles=3000, explorationFraction=0.4, trainingFraction=0.5):
+class EpochHandler:
+    def __init__(self, totalCycles=15000, explorationFraction=0.7, trainingFraction=0.25):
         assert (explorationFraction + trainingFraction) <= 1
         self.explorationCycles = totalCycles * explorationFraction
         self.trainingCycles = totalCycles * (explorationFraction + trainingFraction)
@@ -10,34 +10,53 @@ class epochHandler:
 
     def setExploration(self, agent):
         print 'Starting exploration!'
-        self.stage = 1
-        agent.epsilon = 0.5
+        agent.epsilon = 0.8
         agent.alpha = 1
         agent.gamma = 0.8
 
     def setTraining(self, agent):
         print 'Starting training!'
-        self.stage = 2
         agent.epsilon = 0.1
-        agent.alpha = 0.7
+        agent.alpha = 0.9
         agent.gamma = 0.8
 
     def setPlay(self, agent):
         print 'Starting play phase!'
-        self.stage = 3
         agent.epsilon = 0
         agent.alpha = 0.1
         agent.gamma = 0.8
 
-    def stageMonitoring(self, cyclesPassed, agent):
-        if(cyclesPassed < self.explorationCycles):
-            if(self.stage == 0):
-                self.setExploration(agent)
-        elif(cyclesPassed < self.trainingCycles):
-            if(self.stage == 1):
-                self.setTraining(agent)
-        elif(self.stage == 2):
-            self.setPlay(agent)
+    def stageMonitoring(self, cyclesPassed, playerList):
+        for agent in playerList:
+            if(cyclesPassed < self.explorationCycles):
+                if(self.stage == 0):
+                    finalStage = 1
+                    self.setExploration(agent)
+            elif(cyclesPassed < self.trainingCycles):
+                if(self.stage == 1):
+                    finalStage = 2
+                    self.setTraining(agent)
+            elif(self.stage == 2):
+                finalStage = 3
+                self.setPlay(agent)
+        if(finalStage != self.stage):
+            self.stage = finalStage
+
+
+class TurnHandler:
+    def __init__(self):
+        self.numberOfPlayers = 0
+        self.playingID = 0
+
+    def addPlayers(self, playerList):
+        self.numberOfPlayers = len(playerList)
+
+    def setTurn(self, playerList):
+        if(not playerList[self.playingID].myTurn):
+            self.playingID += 1
+            if(self.playingID >= self.numberOfPlayers):
+                self.playingID = 0
+            playerList[self.playingID].setPlayerTurn()
 
 
 class Stager:
@@ -51,11 +70,12 @@ class Stager:
         self.outputFile = open(outputFileName, 'w')
         outputString = 'Cycles Movements_cycle '
         self.outputFile.write(outputString)
-        self.epochHandler = epochHandler(limCycles, 0.4, 0.5)
+        self.epochHandler = EpochHandler(limCycles, 0.4, 0.5)
         explCycles = int(self.epochHandler.explorationCycles)
         trainCycles = int(self.epochHandler.trainingCycles)
         outputString = '{} {}\n'.format(explCycles, trainCycles)
         self.outputFile.write(outputString)
+        self.turnHandler = TurnHandler()
 
     def outputToFile(self):
         if((self.cyclesPassed % self.outputFrequency) != 0):
@@ -76,15 +96,16 @@ class Stager:
         totalMoves = self.averageMoves * (outputCycles - 1)
         self.averageMoves = (totalMoves + self.movementCount) / outputCycles
 
-    def updateCount(self):
+    def updateTurn(self, playerList):
         self.movementCount += 1
+        self.turnHandler.setTurn(playerList)
 
-    def updateCycle(self, agent):
+    def updateCycle(self, playerList):
         self.cyclesPassed += 1
         self.cycleStats()
         self.outputToFile()
         self.printStatus()
-        self.epochHandler.stageMonitoring(self.cyclesPassed, agent)
+        self.epochHandler.stageMonitoring(self.cyclesPassed, playerList)
         self.movementCount = 0
 
     def areWeCycling(self):
