@@ -9,7 +9,7 @@ playerList = [student, competitor]
 stager = Stager(limCycles)
 monitor = Monitor(limCycles, 10, 'Output.txt', 200)
 
-monitor.epochHandler.stageMonitoring(0, [student])
+monitor.epochHandler.stageMonitoring(0, playerList[0])
 stager.turnHandler.addPlayers(playerList)
 playing = True
 playerList[0].setPlayerTurn()

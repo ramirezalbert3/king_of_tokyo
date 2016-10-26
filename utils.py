@@ -26,20 +26,19 @@ class EpochHandler:
         agent.alpha = 0.1
         agent.gamma = 0.8
 
-    def stageMonitoring(self, cyclesPassed, playerList):
+    def stageMonitoring(self, cyclesPassed, agent):
         finalStage = self.stage
-        for agent in playerList:
-            if(cyclesPassed < self.explorationCycles):
-                if(self.stage == 0):
-                    finalStage = 1
-                    self.setExploration(agent)
-            elif(cyclesPassed < self.trainingCycles):
-                if(self.stage == 1):
-                    finalStage = 2
-                    self.setTraining(agent)
-            elif(self.stage == 2):
-                finalStage = 3
-                self.setPlay(agent)
+        if(cyclesPassed < self.explorationCycles):
+            if(self.stage == 0):
+                finalStage = 1
+                self.setExploration(agent)
+        elif(cyclesPassed < self.trainingCycles):
+            if(self.stage == 1):
+                finalStage = 2
+                self.setTraining(agent)
+        elif(self.stage == 2):
+            finalStage = 3
+            self.setPlay(agent)
         if(finalStage != self.stage):
             self.stage = finalStage
 
@@ -104,7 +103,7 @@ class Monitor:
         self.cycleStats(cycles)
         self.outputToFile(cycles)
         self.printStatus(cycles)
-        self.epochHandler.stageMonitoring(cycles, [player])
+        self.epochHandler.stageMonitoring(cycles, player)
         self.movementCount = 0
 
     def __del__(self):
@@ -115,13 +114,13 @@ class Stager:
     def __init__(self, limCycles=15000):
         self.limCycles = limCycles
         self.cyclesPassed = 0
-        self.turnHandler = TurnHandler()    
+        self.turnHandler = TurnHandler()
 
     def updateTurn(self, playerList):
         self.turnHandler.setTurn(playerList)
 
     def updateCycle(self):
-        self.cyclesPassed += 1 
+        self.cyclesPassed += 1
 
     def areWeCycling(self):
         return (self.cyclesPassed < self.limCycles)
