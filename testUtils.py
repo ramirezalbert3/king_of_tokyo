@@ -31,7 +31,29 @@ class TestTurnHandler(unittest.TestCase):
             self.assertEqual(testedHandler.playingID, playerPlaying)
 
 
-class TestStager(unittest.TestCase):
+class TestEpochHandler(unittest.TestCase):
     def testStager(self):
-        testedStager = Stager()
-        pass
+        explFraction = 0.4
+        trainFracion = 0.3
+        cycles = 10
+        testedHandler = EpochHandler(cycles, explFraction, trainFracion)
+        auxPlayer = KingAgent()
+        # First stage boundary
+        inCycles = 0
+        self.assertEqual(testedHandler.stage, 0)
+        testedHandler.stageMonitoring(inCycles, auxPlayer)
+        self.assertEqual(testedHandler.stage, 1)
+        # Skipping forward prevention
+        testedHandler.stageMonitoring(cycles, auxPlayer)
+        self.assertEqual(testedHandler.stage, 1)
+        # Second stage boundary
+        inCycles = cycles * (explFraction)
+        testedHandler.stageMonitoring(inCycles, auxPlayer)
+        self.assertEqual(testedHandler.stage, 2)
+        # Skipping back prevention
+        testedHandler.stageMonitoring(0, auxPlayer)
+        self.assertEqual(testedHandler.stage, 2)
+        # Third stage boundary
+        inCycles = cycles * (explFraction + trainFracion)
+        testedHandler.stageMonitoring(inCycles, auxPlayer)
+        self.assertEqual(testedHandler.stage, 3)
