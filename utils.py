@@ -60,61 +60,71 @@ class TurnHandler:
             playerList[self.playingID].setPlayerTurn()
 
 
-class Stager:
-    def __init__(self, limCycles=3000, outputFrequency=10, outputFileName='Output.txt', printFrequency=200):
-        self.limCycles = limCycles
-        self.outputFrequency = outputFrequency
-        self.printFrequency = printFrequency
-        self.cyclesPassed = 0
+class Monitor:
+    def __init__(self, limCycles, outputFrequency=10, outputFileName='Output.txt', printFrequency=200):
         self.movementCount = 0
         self.averageMoves = 0
-        self.outputFile = open(outputFileName, 'w')
-        outputString = 'Cycles Movements_cycle '
-        self.outputFile.write(outputString)
+        self.outputFrequency = outputFrequency
+        self.printFrequency = printFrequency
+        #
         self.epochHandler = EpochHandler(limCycles, 0.4, 0.5)
         explCycles = int(self.epochHandler.explorationCycles)
         trainCycles = int(self.epochHandler.trainingCycles)
+        #
+        self.outputFile = open(outputFileName, 'w')
+        outputString = 'Cycles Movements_cycle '
+        self.outputFile.write(outputString)
         outputString = '{} {}\n'.format(explCycles, trainCycles)
         self.outputFile.write(outputString)
-        self.turnHandler = TurnHandler()
 
-    def outputToFile(self):
-        if((self.cyclesPassed % self.outputFrequency) != 0):
+    def outputToFile(self, cycles):
+        if((cycles % self.outputFrequency) != 0):
             return
-        outputString = '{} {}\n'.format(self.cyclesPassed, self.averageMoves)
+        outputString = '{} {}\n'.format(cycles, self.averageMoves)
         self.outputFile.write(outputString)
         self.averageMoves = 0
 
-    def printStatus(self):
-        if((self.cyclesPassed % self.printFrequency) != 0):
+    def printStatus(self, cycles):
+        if((cycles % self.printFrequency) != 0):
             return
-        print 'Cycle:', self.cyclesPassed, '\tCycle Moves:', self.movementCount
+        print 'Cycle:', cycles, '\tCycle Moves:', self.movementCount
 
-    def cycleStats(self):
-        outputCycles = self.cyclesPassed % self.outputFrequency
+    def cycleStats(self, cycles):
+        outputCycles = cycles % self.outputFrequency
         if(outputCycles == 0):
             outputCycles = self.outputFrequency
         totalMoves = self.averageMoves * (outputCycles - 1)
         self.averageMoves = (totalMoves + self.movementCount) / outputCycles
 
-    def updateTurn(self, playerList):
-        self.movementCount += 1
-        self.turnHandler.setTurn(playerList)
+    def updateTurn(self, player):
+        if(player.myTurn):
+            self.movementCount += 1
 
-    def updateCycle(self, playerList):
-        self.cyclesPassed += 1
-        self.movementCount = self.movementCount / self.turnHandler.numberOfPlayers
-        self.cycleStats()
-        self.outputToFile()
-        self.printStatus()
-        self.epochHandler.stageMonitoring(self.cyclesPassed, playerList)
+    def updateCycle(self, cycles, player):
+        self.cycleStats(cycles)
+        self.outputToFile(cycles)
+        self.printStatus(cycles)
+        self.epochHandler.stageMonitoring(cycles, [player])
         self.movementCount = 0
-
-    def areWeCycling(self):
-        return (self.cyclesPassed < self.limCycles)
 
     def __del__(self):
         self.outputFile.close()
+
+
+class Stager:
+    def __init__(self, limCycles=15000):
+        self.limCycles = limCycles
+        self.cyclesPassed = 0
+        self.turnHandler = TurnHandler()    
+
+    def updateTurn(self, playerList):
+        self.turnHandler.setTurn(playerList)
+
+    def updateCycle(self):
+        self.cyclesPassed += 1 
+
+    def areWeCycling(self):
+        return (self.cyclesPassed < self.limCycles)
 
 
 def flipCoin(probability):
