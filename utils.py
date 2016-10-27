@@ -9,19 +9,22 @@ class EpochHandler:
         self.stage = 0
 
     def setExploration(self, agent):
-        print 'Starting exploration!'
+        if(agent.ID == 0):
+            print 'Starting exploration!'
         agent.epsilon = 0.8
         agent.alpha = 1
         agent.gamma = 0.8
 
     def setTraining(self, agent):
-        print 'Starting training!'
+        if(agent.ID == 0):
+            print 'Starting training!'
         agent.epsilon = 0.1
         agent.alpha = 0.9
         agent.gamma = 0.8
 
     def setPlay(self, agent):
-        print 'Starting play phase!'
+        if(agent.ID == 0):
+            print 'Starting play phase!'
         agent.epsilon = 0
         agent.alpha = 0.1
         agent.gamma = 0.8

@@ -39,6 +39,7 @@ class TestEpochHandler(unittest.TestCase):
         cycles = 10
         testedHandler = EpochHandler(cycles, explFraction, trainFracion)
         auxPlayer = KingAgent()
+        auxPlayer.ID = -1  # Avoid prints
         # First stage boundary
         inCycles = 0
         self.assertEqual(testedHandler.stage, 0)
