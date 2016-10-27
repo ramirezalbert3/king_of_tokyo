@@ -1,4 +1,0 @@
-sudo pip install coverage
-sudo pip install enum
-sudo pip install enum34
-sudo pip flake8
