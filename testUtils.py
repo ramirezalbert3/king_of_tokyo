@@ -57,3 +57,30 @@ class TestEpochHandler(unittest.TestCase):
         inCycles = cycles * (explFraction + trainFracion)
         testedHandler.stageMonitoring(inCycles, auxPlayer)
         self.assertEqual(testedHandler.stage, 3)
+
+
+class TestMonitor(unittest.TestCase):
+    def testUpdateTurn(self):
+        auxPlayer = KingAgent()
+        testedMonitor = Monitor()
+        testedMonitor.updateTurn(auxPlayer)
+        self.assertEqual(0, testedMonitor.movementCount)
+        auxPlayer.setPlayerTurn()
+        testedMonitor.updateTurn(auxPlayer)
+        self.assertEqual(1, testedMonitor.movementCount)
+
+    def testCycleStats(self):
+        cycles1 = 3
+        cycles2 = 6
+        outputFreq = 3
+        averages = [1, 4]
+        testedMonitor = Monitor(cycles2, outputFreq)
+        for c in range(cycles1):
+            testedMonitor.movementCount = c
+            testedMonitor.cycleStats(c)
+        self.assertEqual(testedMonitor.averageMoves, averages[0])
+        for c in range(cycles1, cycles2):
+            testedMonitor.movementCount = c
+            testedMonitor.cycleStats(c)
+        self.assertEqual(testedMonitor.averageMoves, averages[1])
+

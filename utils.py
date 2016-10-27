@@ -60,7 +60,7 @@ class TurnHandler:
 
 
 class Monitor:
-    def __init__(self, limCycles, outputFrequency=10, outputFileName='Output.txt', printFrequency=200):
+    def __init__(self, limCycles=3000, outputFrequency=10, outputFileName='Output.txt', printFrequency=200):
         self.movementCount = 0
         self.averageMoves = 0
         self.outputFrequency = outputFrequency
@@ -76,17 +76,18 @@ class Monitor:
         outputString = '{} {}\n'.format(explCycles, trainCycles)
         self.outputFile.write(outputString)
 
-    def outputToFile(self, cycles):
+    def outputToFile(self, cycles):  # pragma: no cover
         if((cycles % self.outputFrequency) != 0):
             return
-        outputString = '{} {}\n'.format(cycles, self.averageMoves)
-        self.outputFile.write(outputString)
-        self.averageMoves = 0
+        else:
+            outputString = '{} {}\n'.format(cycles, self.averageMoves)
+            self.outputFile.write(outputString)
+            self.averageMoves = 0
 
-    def printStatus(self, cycles):
+    def printStatus(self, cycles):  # pragma: no cover
         if((cycles % self.printFrequency) != 0):
             return
-        print 'Cycle:', cycles, '\tCycle Moves:', self.movementCount
+        print 'Cycle:', cycles, '\tMoves:', self.movementCount
 
     def cycleStats(self, cycles):
         outputCycles = cycles % self.outputFrequency
@@ -99,7 +100,7 @@ class Monitor:
         if(player.myTurn):
             self.movementCount += 1
 
-    def updateCycle(self, cycles, player):
+    def updateCycle(self, cycles, player):  # pragma: no cover
         self.cycleStats(cycles)
         self.outputToFile(cycles)
         self.printStatus(cycles)
@@ -110,7 +111,7 @@ class Monitor:
         self.outputFile.close()
 
 
-class Stager:
+class Stager:  # pragma: no cover
     def __init__(self, limCycles=15000):
         self.limCycles = limCycles
         self.cyclesPassed = 0
