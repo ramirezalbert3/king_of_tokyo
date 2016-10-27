@@ -20,7 +20,7 @@ while(stager.areWeCycling()):
     playing = True
     while(playing):
         for player in playerList:
-            player.act()
+            player.act(playerList)
         stager.updateTurn(playerList)
         monitor.updateTurn(playerList[0])
         for player in playerList:

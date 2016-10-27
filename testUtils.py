@@ -25,7 +25,7 @@ class TestTurnHandler(unittest.TestCase):
             testedHandler.playingID = 0
             for i in range(loops):
                 for player in playerList:
-                    player.act()
+                    player.act(playerList)
                 testedHandler.setTurn(playerList)
             playerPlaying = (loops / ROLLS_PER_TURN) % expectedPlayers
             self.assertEqual(testedHandler.playingID, playerPlaying)

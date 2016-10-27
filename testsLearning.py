@@ -80,11 +80,11 @@ class TestKingAgent(unittest.TestCase):
         testedAgent.setPlayerTurn()
         testedAgent.setDiceWithString('333333')
         testedAgent.remainingRolls = 1
-        initState = testedAgent.getState()
+        initState = testedAgent.getState([testedAgent])
         policy = 63  # Keep all dice
         testedAgent.states[initState] = 1
         testedAgent.Policy[initState] = policy
-        testedAgent.act()
+        testedAgent.act([testedAgent])
         self.assertEqual(testedAgent.states[initState], 2)
         self.assertEqual(testedAgent.Q[initState, policy], expectedReward)
         self.assertEqual(testedAgent.V[initState], expectedReward)
@@ -137,7 +137,7 @@ class TestKingAgent(unittest.TestCase):
         # It's important we can use the state to index a Counter
         auxCounter = Counter()
         testedAgent = KingAgent()
-        state = testedAgent.getState()
+        state = testedAgent.getState([testedAgent])
         self.assertEqual(auxCounter[state], 0)
         auxCounter[state] = 1
         self.assertEqual(auxCounter[state], 1)
@@ -145,8 +145,10 @@ class TestKingAgent(unittest.TestCase):
         startingPoints = 0
         remainingRolls = constants.ROLLS_PER_TURN
         playerDice = "111111"
-        inputState = (startingPoints, playerDice, remainingRolls)
-        self.assertEqual(inputState, testedAgent.getState())
+        lives = 10
+        oppLives = 10
+        inputState = (startingPoints, lives, playerDice, remainingRolls, oppLives)
+        self.assertEqual(inputState, testedAgent.getState([testedAgent]))
 
     def testGetAction(self):
         alpha = 0.7
@@ -155,7 +157,7 @@ class TestKingAgent(unittest.TestCase):
         testedAgent = KingAgent(alpha, epsilon, gamma)
         nTests = 100
         count = Counter()
-        state = testedAgent.getState()
+        state = testedAgent.getState([testedAgent])
         expectedPolicy = 1
         testedAgent.Policy[state] = expectedPolicy
         testedAgent.states[state] = 2
@@ -171,6 +173,8 @@ class TestKingAgent(unittest.TestCase):
 
     def testGetReward(self):
         testedAgent = KingAgent()
+        lives = 10
+        minOppLives = 10
         # Multiple cases
         stateList = []
         rewardList = []
@@ -179,14 +183,14 @@ class TestKingAgent(unittest.TestCase):
         remainingRolls = 2
         playerDice = "test"
         expectedReward = 0
-        stateList.append([startingPoints, playerDice, remainingRolls])
+        stateList.append([startingPoints, lives, playerDice, remainingRolls, minOppLives])
         rewardList.append(expectedReward)
         # 2. Reward expected
         startingPoints = 3
         remainingRolls = 0
         playerDice = "test"
         expectedReward = 3
-        stateList.append([startingPoints, playerDice, remainingRolls])
+        stateList.append([startingPoints, lives, playerDice, remainingRolls, minOppLives])
         rewardList.append(expectedReward)
 
         # Test run
@@ -197,7 +201,7 @@ class TestKingAgent(unittest.TestCase):
     def testKeepDice(self):
         testedAgent = KingAgent()
         testedAgent.roll()
-        state = testedAgent.getState()
+        state = testedAgent.getState([testedAgent])
         action = 20  # Dice kept as follows 010 100
         keptDice1 = testedAgent.playerDice[2].currentValue
         keptDice2 = testedAgent.playerDice[4].currentValue
