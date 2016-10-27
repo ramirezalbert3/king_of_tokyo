@@ -1,4 +1,3 @@
-from utils import Stager
 from utils import Monitor
 from utils import EpochHandler
 from utils import TurnHandler
@@ -26,6 +25,8 @@ class TestTurnHandler(unittest.TestCase):
             for i in range(loops):
                 for player in playerList:
                     player.act(playerList)
+                for player in playerList:
+                    player.lives = 10
                 testedHandler.setTurn(playerList)
             playerPlaying = (loops / ROLLS_PER_TURN) % expectedPlayers
             self.assertEqual(testedHandler.playingID, playerPlaying)
@@ -70,6 +71,7 @@ class TestMonitor(unittest.TestCase):
         self.assertEqual(1, testedMonitor.movementCount)
 
     def testCycleStats(self):
+        auxPlayer = KingAgent()
         cycles1 = 3
         cycles2 = 6
         outputFreq = 3
@@ -77,10 +79,10 @@ class TestMonitor(unittest.TestCase):
         testedMonitor = Monitor(cycles2, outputFreq)
         for c in range(cycles1):
             testedMonitor.movementCount = c
-            testedMonitor.cycleStats(c)
+            testedMonitor.cycleStats(c, auxPlayer)
         self.assertEqual(testedMonitor.averageMoves, averages[0])
         for c in range(cycles1, cycles2):
             testedMonitor.movementCount = c
-            testedMonitor.cycleStats(c)
+            testedMonitor.cycleStats(c, auxPlayer)
         self.assertEqual(testedMonitor.averageMoves, averages[1])
 

@@ -66,6 +66,9 @@ class Monitor:
         self.outputFrequency = outputFrequency
         self.printFrequency = printFrequency
         #
+        self.winCount = 0
+        self.loseCount = 0
+        #
         self.epochHandler = EpochHandler(limCycles, 0.4, 0.5)
         explCycles = int(self.epochHandler.explorationCycles)
         trainCycles = int(self.epochHandler.trainingCycles)
@@ -84,26 +87,33 @@ class Monitor:
             self.outputFile.write(outputString)
             self.averageMoves = 0
 
-    def printStatus(self, cycles):  # pragma: no cover
+    def printStatus(self, cycles, player):  # pragma: no cover
         if((cycles % self.printFrequency) != 0):
             return
-        print 'Cycle:', cycles, '\tMoves:', self.movementCount
+        if(player.ID == 0):
+            print 'Cycle:', cycles
+        print 'Player:', player.ID+1, '\tMoves:', self.movementCount
+        print 'Won:', self.winCount, '\tLost:', self.loseCount
 
-    def cycleStats(self, cycles):
+    def cycleStats(self, cycles, player):
         outputCycles = cycles % self.outputFrequency
         if(outputCycles == 0):
             outputCycles = self.outputFrequency
         totalMoves = self.averageMoves * (outputCycles - 1)
         self.averageMoves = (totalMoves + self.movementCount) / outputCycles
+        if(player.didPlayerLose()):
+            self.loseCount += 1
+        if(player.didPlayerWin()):
+            self.winCount += 1
 
     def updateTurn(self, player):
         if(player.myTurn):
             self.movementCount += 1
 
     def updateCycle(self, cycles, player):  # pragma: no cover
-        self.cycleStats(cycles)
+        self.cycleStats(cycles, player)
         self.outputToFile(cycles)
-        self.printStatus(cycles)
+        self.printStatus(cycles, player)
         self.epochHandler.stageMonitoring(cycles, player)
         self.movementCount = 0
 

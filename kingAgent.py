@@ -17,7 +17,7 @@ class KingAgent(Agent, Player):
         state = self.getState(playerList)
         action = self.getAction(state)
         self.keepDice(state, action)
-        self.play()
+        self.play(playerList)
         nextState = self.getState(playerList)
         reward = self.getReward(nextState)
         self.update(state, action, reward, nextState)

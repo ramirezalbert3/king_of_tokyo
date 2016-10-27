@@ -51,10 +51,10 @@ class TestPlayer(unittest.TestCase):
         while(not testedPlayer.didPlayerWin()):
             if(not testedPlayer.isItPlayerTurn()):
                 testedPlayer.setPlayerTurn()
-            testedPlayer.play()
+            testedPlayer.play([testedPlayer])
         self.assertEqual(testedPlayer.points, 20)
         self.assertTrue(testedPlayer.didPlayerWin())
-        testedPlayer.play()
+        testedPlayer.play([testedPlayer])
         self.assertEqual(testedPlayer.points, 20)
 
     def testLose(self):
@@ -157,5 +157,5 @@ class TestPlayer(unittest.TestCase):
             testedPlayer.setDiceWithString(inputPointDiceList[i])
             testedPlayer.processDice()
             self.assertEqual(expectedPoints[i], testedPlayer.pointsDice)
-            self.assertEqual(expectedAttack[i], testedPlayer.attack())
+            self.assertEqual(expectedAttack[i], testedPlayer.attackDice)
             self.assertEqual(expectedHeal[i], testedPlayer.healDice)

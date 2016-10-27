@@ -58,7 +58,10 @@ class Player:
                     currentDice.roll()
             self.remainingRolls -= 1
 
-    def play(self):
+    def attack(self, player):
+        player.takeDamage(self.attackDice)
+
+    def play(self, playerList):
         if (not self.myTurn or self.playerWon or self.playerLost or self.remainingRolls == 0):
             return
         else:
@@ -67,6 +70,9 @@ class Player:
             self.healDamage(self.healDice)
             self.addPoints()
             if (self.remainingRolls == 0):
+                for player in playerList:
+                    if(player.ID != self.ID):
+                        self.attack(player)
                 self.myTurn = False
 
 # Setters
@@ -107,9 +113,6 @@ class Player:
                 assert (False), "Unknown dice value in diceString"
 
 # Getters & Printers
-    def attack(self):
-        return self.attackDice
-
     def isItPlayerTurn(self):
         return (self.myTurn)
 

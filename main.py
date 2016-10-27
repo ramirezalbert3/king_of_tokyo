@@ -7,9 +7,11 @@ student = KingAgent()
 competitor = KingAgent()
 playerList = [student, competitor]
 stager = Stager(limCycles)
-monitor = Monitor(limCycles, 10, 'Output.txt', 200)
+monitor1 = Monitor(limCycles, 10, 'Output.txt', 200)
+monitor2 = Monitor(limCycles, 10, 'Output2.txt', 200)
 
-monitor.epochHandler.stageMonitoring(0, playerList[0])
+monitor1.epochHandler.stageMonitoring(0, playerList[0])
+monitor2.epochHandler.stageMonitoring(0, playerList[1])
 stager.turnHandler.addPlayers(playerList)
 playing = True
 playerList[0].setPlayerTurn()
@@ -22,8 +24,10 @@ while(stager.areWeCycling()):
         for player in playerList:
             player.act(playerList)
         stager.updateTurn(playerList)
-        monitor.updateTurn(playerList[0])
+        monitor1.updateTurn(playerList[0])
+        monitor2.updateTurn(playerList[1])
         for player in playerList:
             playing = playing and not (player.didPlayerWin() or player.didPlayerLose())
     stager.updateCycle()
-    monitor.updateCycle(stager.cyclesPassed, playerList[0])
+    monitor1.updateCycle(stager.cyclesPassed, playerList[0])
+    monitor2.updateCycle(stager.cyclesPassed, playerList[1])
