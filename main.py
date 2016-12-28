@@ -14,7 +14,7 @@ monitor1.epochHandler.stageMonitoring(0, playerList[0])
 monitor2.epochHandler.stageMonitoring(0, playerList[1])
 stager.turnHandler.addPlayers(playerList)
 playing = True
-playerList[0].setPlayerTurn()
+
 while(stager.areWeCycling()):
     for player in playerList:
         player.resetPlayer()
