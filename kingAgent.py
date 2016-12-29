@@ -3,6 +3,9 @@ from player import Player
 from utils import flipCoin
 from constants import MAX_LIVES
 from constants import MAX_POINTS
+from constants import REWARD
+from constants import EXPLORATION_REWARD
+
 import random
 
 
@@ -42,11 +45,11 @@ class KingAgent(Agent, Player):
         reward += MAX_LIVES - minOtherLives
         '''
         if(playerPoints == MAX_POINTS):
-            reward += 100
+            reward += REWARD
         if(playerLives == 0):
-            reward += -100
+            reward -= REWARD
         if(minOtherLives == 0):
-            reward += 100
+            reward += REWARD
         return reward
 
     def getState(self, playerList):

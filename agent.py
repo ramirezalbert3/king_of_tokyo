@@ -43,6 +43,16 @@ class Agent():
         '''
         pass
 
+    def initState(self, state, actionList):  # pragma: no cover
+        '''
+        Init random Q values for a given state
+        on first visit
+        '''
+        if(self.states[state] == 0):
+            for action in actionList:
+                # self.Q[state, action] = random()
+        return
+
     def getReward(self, state):  # pragma: no cover
         '''
         State is defined in a list:
