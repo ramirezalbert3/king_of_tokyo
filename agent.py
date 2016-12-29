@@ -1,4 +1,5 @@
 from collections import Counter
+import random
 """
 Useful definitions:
 V(s) = max_{a in actions} Q(s,a)
@@ -50,7 +51,7 @@ class Agent():
         '''
         if(self.states[state] == 0):
             for action in actionList:
-                # self.Q[state, action] = random()
+                self.Q[state, action] = random.uniform(MIN_INIT_RAND, MAX_INIT_RAND)
         return
 
     def getReward(self, state):  # pragma: no cover

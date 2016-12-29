@@ -92,6 +92,7 @@ class KingAgent(Agent, Player):
         or a random legal action based on self.epsilon
         '''
         legalActions = self.getLegalActions()
+        self.initState(state, legalActions)
         action = self.getPolicy(state)
         if (action is None or flipCoin(self.epsilon)):
             action = random.choice(legalActions)
