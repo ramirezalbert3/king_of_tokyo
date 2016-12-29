@@ -94,8 +94,10 @@ class KingAgent(Agent, Player):
         legalActions = self.getLegalActions()
         self.initState(state, legalActions)
         action = self.getPolicy(state)
+        '''
         if (action is None or flipCoin(self.epsilon)):
             action = random.choice(legalActions)
+        '''
         return action
 
     def keepDice(self, state, action):

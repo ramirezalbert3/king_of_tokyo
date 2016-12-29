@@ -1,6 +1,7 @@
 from collections import Counter
 from constants import MIN_INIT_RAND
 from constants import MAX_INIT_RAND
+from constants import BASE_EXPLFNC_REW
 import random
 """
 Useful definitions:
@@ -36,9 +37,12 @@ class Agent():
         increaseQ = reward + self.gamma*self.V[nextState]
         # For alpha=0 no learning, for =1 no remembering
         self.Q[state, action] += self.alpha * (increaseQ - prevQ)
-        if (self.Q[state, action] > self.V[state]):
-            self.V[state] = self.Q[state, action]
-            self.Policy[state] = action
+        # Exploration function
+        # Not really, we are accumulating and learning this in the
+        # steps above so not really substracted for visits>1
+        self.Q[state, action] += BASE_EXPLFNC_REW / self.states[state]
+        if (self.states[state] > 1):
+            self.Q[state, action] -= BASE_EXPLFNC_REW / (self.states[state]-1)
 
     def act(self, state):  # pragma: no cover
         '''
@@ -93,9 +97,12 @@ class Agent():
 
     def getPolicy(self, state):
         '''
-        Return the best action to take in a state or None
+        Return the best action to take in a state
+        Update Policy and V
         '''
-        if (self.states[state] > 0):
-            return self.Policy[state]
-        else:
-            return None
+        legalActions = self.getLegalActions()
+        for action in legalActions:
+            if self.Q[state, action] > self.V[state]:
+                self.V[state] = self.Q[state, action]
+                self.Policy[state] = action
+        return self.Policy[state]
