@@ -1,4 +1,6 @@
 from collections import Counter
+from constants import MIN_INIT_RAND
+from constants import MAX_INIT_RAND
 import random
 """
 Useful definitions:

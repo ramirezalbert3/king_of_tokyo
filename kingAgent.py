@@ -4,7 +4,7 @@ from utils import flipCoin
 from constants import MAX_LIVES
 from constants import MAX_POINTS
 from constants import REWARD
-from constants import EXPLORATION_REWARD
+from constants import BASE_EXPLFNC_REW
 
 import random
 
